@@ -54,17 +54,13 @@ public boolean hasElectron(DataBank recPart){
 	return found
 }
 public boolean isElectron(DataBank recPart, int p){
-	if (pID_default_electron_cut(recPart,p)&& pID_charge_cut(recPart,p) && pID_kinematic_cut(recPart,p)&& pID_inDC(recPart,p)){
+	if (pID_default_electron_cut(recPart,p)&& pID_charge_cut(recPart,p)){
 		e_index=p
 		return true
 	}
 	else return false
 }
-public boolean pID_inDC(DataBank recPart, int p){
-	int status = recPart.getShort("status", p);
-	if (status<0) status = -status;
-	boolean pID_inDC = (status>=2000 && status<4000);
-}
+
 public boolean pID_default_electron_cut(DataBank recPart, int p){
   if(recPart.getInt("pid",p)==11) return true;
   else return false;
@@ -72,19 +68,6 @@ public boolean pID_default_electron_cut(DataBank recPart, int p){
 public boolean pID_charge_cut(DataBank recPart, int p){
   if(recPart.getInt("charge",p)==-1) return true;
   else return false;
-}
-public boolean pID_kinematic_cut(DataBank recPart, int p){
-	float px = recPart.getFloat("px", p);
-	float py = recPart.getFloat("py", p);
-	float pz = recPart.getFloat("pz", p);
-	float vz = recPart.getFloat("vz", p);
-	float mom = (float)Math.sqrt(px*px+py*py+pz*pz);
-	float theta = (float)Math.toDegrees(Math.acos(pz/mom));
-	float phi = (float)Math.toDegrees(Math.atan2(py,px));
-	if(mom>1.75 && theta>7 && Math.abs(vz)<15 && theta>17*(1-mom/7) ){
-		return true;
-	}
-	else return false;
 }
 
 public void makeElectron(DataBank recPart){
