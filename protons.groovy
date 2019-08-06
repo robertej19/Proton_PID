@@ -17,8 +17,8 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 
 """------------------------ Function Definitions -------------------------"""
 
-public void fillHists(p_momentum,p_theta){
-	H_proton_theta_momentum[p_sect-1].fill(p_momentum,p_theta)
+public void fillHists(p_momentum,beta){
+	H_proton_theta_momentum[p_sect-1].fill(p_momentum,beta)
 }
 
 public void processFile(String filename) {
@@ -81,7 +81,7 @@ def makeElectron(DataBank reconstructedParticle,int e_index){
 		float pz = reconstructedParticle.getFloat("pz",ei)
 		float p_momentum = (float)Math.sqrt(px*px+py*py+pz*pz)
 		e_vz = reconstructedParticle.getFloat("vz",ei)
-		e_vx = reconstructedParticle.getFloat("vxx",ei)
+		e_vx = reconstructedParticle.getFloat("vx",ei)
 		e_vy = reconstructedParticle.getFloat("vy",ei)
 		e_phi = (float)Math.toDegrees(Math.atan2(py,px))
 		if(e_phi<0) e_phi+=360;
@@ -92,7 +92,9 @@ def makeElectron(DataBank reconstructedParticle,int e_index){
 		Ve = new LorentzVector(px,py,pz,p_momentum)
 		e_phi = (float) Math.toDegrees(Ve.phi())
 		float p_theta = (float) Math.toDegrees(Ve.theta())
-		return [p_momentum, p_theta]
+		float p_mass = 0.938 //Proton mass in GeV
+		float beta = (float)Math.sqrt(p_momentum*p_momentum/p_mass/p_mass/(1+p_momentum*p_momentum/p_mass/p_mass))
+		return [p_momentum, beta]
 }
 
 """------------------------ Variable Definitions -------------------------"""
@@ -109,7 +111,7 @@ out.mkdir('/'+run)
 out.cd('/'+run)
 
 H_proton_theta_momentum =(0..<6).collect{
-	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,40);
+	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,1);
 	return h1
 }
 
