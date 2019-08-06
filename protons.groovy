@@ -125,11 +125,10 @@ H_elec_theta_mom =(0..<6).collect{
 
 """------------------------ Start of Program -------------------------"""
 
-//filenum=-1
+filenum=-1
 for (arg in args){
-	//filenum=filenum+1
-	//println("filenum is" +filenum)
-	//if (filenum==0) continue
+	filenum=filenum+1
+	if (filenum==0) continue
 	processFile(arg)
 }
 
