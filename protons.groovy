@@ -15,6 +15,17 @@ import org.jlab.clas.physics.LorentzVector;
 import org.jlab.groot.base.GStyle;
 import org.jlab.groot.graphics.EmbeddedCanvas;
 
+"""------------------------ Function Definitions -------------------------"""
+
+public void processFile(String filename) {
+	HipoDataSource reader = new HipoDataSource()
+	reader.open(filename)
+
+	while( reader.hasEvent()){
+		DataEvent event = reader.getNextEvent();
+		processEvent(event)
+	}
+}
 public void processEvent(DataEvent event) {
 	if(!event.hasBank("REC::Particle")) return
 	DataBank partBank = event.getBank("REC::Particle");
@@ -93,9 +104,8 @@ public boolean ele_kine_cut(DataBank recPart, int p){
 	else return false;
 }
 
-"""Start of actual program"""
+"""------------------------ Variable Definitions -------------------------"""
 
-"""xxxxxxxxxxxxxxxxxxxx Variable definitions xxxxxxxxxxxxxxxxxxxxxxxxxx"""
 def run = args[0].toInteger()
 float EB = 10.6f
 if(run>6607) EB=10.2f
@@ -113,24 +123,17 @@ H_elec_theta_mom =(0..<6).collect{
 	return h1
 }
 
-"""xxxxxxxxxxxxxxxxxxxx ------------------ xxxxxxxxxxxxxxxxxxxxxxxxxx"""
+"""------------------------ Start of Program -------------------------"""
 
 filenum=-1
 for (arg in args){
 	filenum=filenum+1
 	if (filenum==0) continue
-	HipoDataSource reader = new HipoDataSource();
-	reader.open(arg);
-
-	while( reader.hasEvent()){
-		DataEvent event = reader.getNextEvent();
-		processEvent(event)
-	}
+	processFile(arg)
 }
 
 (0..<6).each{
 	out.addDataSet(H_elec_theta_mom[it])
 }
 
-//out.addDataSet(H_elec_mom)
 out.writeFile('electron_pID_new'+run+'.hipo')
