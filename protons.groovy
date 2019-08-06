@@ -17,6 +17,10 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 
 """------------------------ Function Definitions -------------------------"""
 
+public void fillHists(){
+	H_elec_theta_mom[e_sect-1].fill(e_mom,e_theta)
+}
+
 public void processFile(String filename) {
 	HipoDataSource reader = new HipoDataSource()
 	reader.open(filename)
@@ -28,18 +32,61 @@ public void processFile(String filename) {
 }
 public void processEvent(DataEvent event) {
 	if(!event.hasBank("REC::Particle")) return
-	DataBank partBank = event.getBank("REC::Particle");
+	DataBank particleBank = event.getBank("REC::Particle");
 	e_index=-1
-	if (!hasElectron(partBank)) return
+	if (!hasElectron(particleBank)) return
 	if (e_index>-1){
-		makeElectron(partBank)
+		makeElectron(particleBank)
 		fillHists()
 	}
 	else return;
 }
-public void fillHists(){
-	H_elec_theta_mom[e_sect-1].fill(e_mom,e_theta)
+
+
+public boolean hasElectron(DataBank recPart){
+	boolean found = false
+	for(int p=0;p<recPart.rows();p++){
+		if (isElectron(recPart,p)){
+			if (found) System.out.println ("Error, two or more electrons found!")
+			found=true
+		}
+	}
+	return found
 }
+public boolean isElectron(DataBank recPart, int p){
+	if (pID_default_electron_cut(recPart,p)&& pID_charge_cut(recPart,p) && pID_kinematic_cut(recPart,p)&& pID_inDC(recPart,p)){
+		e_index=p
+		return true
+	}
+	else return false
+}
+public boolean pID_inDC(DataBank recPart, int p){
+	int status = recPart.getShort("status", p);
+	if (status<0) status = -status;
+	boolean pID_inDC = (status>=2000 && status<4000);
+}
+public boolean pID_default_electron_cut(DataBank recPart, int p){
+  if(recPart.getInt("pid",p)==11) return true;
+  else return false;
+}
+public boolean pID_charge_cut(DataBank recPart, int p){
+  if(recPart.getInt("charge",p)==-1) return true;
+  else return false;
+}
+public boolean pID_kinematic_cut(DataBank recPart, int p){
+	float px = recPart.getFloat("px", p);
+	float py = recPart.getFloat("py", p);
+	float pz = recPart.getFloat("pz", p);
+	float vz = recPart.getFloat("vz", p);
+	float mom = (float)Math.sqrt(px*px+py*py+pz*pz);
+	float theta = (float)Math.toDegrees(Math.acos(pz/mom));
+	float phi = (float)Math.toDegrees(Math.atan2(py,px));
+	if(mom>1.75 && theta>7 && Math.abs(vz)<15 && theta>17*(1-mom/7) ){
+		return true;
+	}
+	else return false;
+}
+
 public void makeElectron(DataBank recPart){
 		int ei=e_index
 		float px = recPart.getFloat("px",ei)
@@ -58,50 +105,6 @@ public void makeElectron(DataBank recPart){
 		Ve = new LorentzVector(px,py,pz,e_mom)
 		e_phi = (float) Math.toDegrees(Ve.phi())
 		e_theta = (float) Math.toDegrees(Ve.theta())
-}
-public boolean hasElectron(DataBank recPart){
-	boolean found = false
-	for(int p=0;p<recPart.rows();p++){
-		if (isElectron(recPart,p)){
-			if (found) System.out.println ("Error, two or more electrons found!")
-			found=true
-		}
-	}
-	return found
-}
-public boolean isElectron(DataBank recPart, int p){
-	if (ele_default_PID_cut(recPart,p)&& ele_charge_cut(recPart,p) && ele_kine_cut(recPart,p)&& inDC(recPart,p)){
-		//System.out.println("Electron Found!")
-		e_index=p
-		return true
-	}
-	else return false
-}
-public boolean inDC(DataBank recPart, int p){
-	int status = recPart.getShort("status", p);
-	if (status<0) status = -status;
-	boolean inDC = (status>=2000 && status<4000);
-}
-public boolean ele_default_PID_cut(DataBank recPart, int p){
-  if(recPart.getInt("pid",p)==11) return true;
-  else return false;
-}
-public boolean ele_charge_cut(DataBank recPart, int p){
-  if(recPart.getInt("charge",p)==-1) return true;
-  else return false;
-}
-public boolean ele_kine_cut(DataBank recPart, int p){
-	float px = recPart.getFloat("px", p);
-	float py = recPart.getFloat("py", p);
-	float pz = recPart.getFloat("pz", p);
-	float vz = recPart.getFloat("vz", p);
-	float mom = (float)Math.sqrt(px*px+py*py+pz*pz);
-	float theta = (float)Math.toDegrees(Math.acos(pz/mom));
-	float phi = (float)Math.toDegrees(Math.atan2(py,px));
-	if(mom>1.75 && theta>7 && Math.abs(vz)<15 && theta>17*(1-mom/7) ){
-		return true;
-	}
-	else return false;
 }
 
 """------------------------ Variable Definitions -------------------------"""
@@ -125,7 +128,7 @@ H_elec_theta_mom =(0..<6).collect{
 
 """------------------------ Start of Program -------------------------"""
 
-filenum=-1
+filenum=-1 //There should be able to get rid of this filenum issue
 for (arg in args){
 	filenum=filenum+1
 	if (filenum==0) continue
