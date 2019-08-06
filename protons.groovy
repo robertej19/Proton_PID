@@ -89,6 +89,7 @@ public boolean pID_kinematic_cut(DataBank recPart, int p){
 
 public void makeElectron(DataBank recPart){
 		int ei=e_index
+		println("e_index ei is: "+ei)
 		float px = recPart.getFloat("px",ei)
 		float py = recPart.getFloat("py",ei)
 		float pz = recPart.getFloat("pz",ei)
