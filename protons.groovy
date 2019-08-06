@@ -36,7 +36,7 @@ public void processEvent(DataEvent event) {
 	e_index=-1
 	if (!hasElectron(particleBank)) return
 	if (e_index>-1){
-		p_momentum,p_theta = makeElectron(particleBank)
+		p_momentum, p_theta = makeElectron(particleBank)
 		fillHists(p_momentum,p_theta)
 	}
 	else return;
