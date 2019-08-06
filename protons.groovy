@@ -17,8 +17,8 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 
 """------------------------ Function Definitions -------------------------"""
 
-public void fillHists(){
-	H_elec_theta_mom[e_sect-1].fill(e_mom,e_theta)
+public void fillHists(p_momentum,p_theta){
+	H_proton_theta_momentum[p_sect-1].fill(p_momentum,p_theta)
 }
 
 public void processFile(String filename) {
@@ -36,8 +36,8 @@ public void processEvent(DataEvent event) {
 	e_index=-1
 	if (!hasElectron(particleBank)) return
 	if (e_index>-1){
-		makeElectron(particleBank)
-		fillHists()
+		p_momentum,p_theta = makeElectron(particleBank)
+		fillHists(p_momentum,p_theta)
 	}
 	else return;
 }
@@ -76,7 +76,7 @@ public void makeElectron(DataBank recPart){
 		float px = recPart.getFloat("px",ei)
 		float py = recPart.getFloat("py",ei)
 		float pz = recPart.getFloat("pz",ei)
-		e_mom = (float)Math.sqrt(px*px+py*py+pz*pz)
+		float p_momentum = (float)Math.sqrt(px*px+py*py+pz*pz)
 		e_vz = recPart.getFloat("vz",ei)
 		e_vx = recPart.getFloat("vx",ei)
 		e_vy = recPart.getFloat("vy",ei)
@@ -85,10 +85,11 @@ public void makeElectron(DataBank recPart){
 		e_phi=360-e_phi;
 		e_phi=e_phi-150;
 		if (e_phi<0) e_phi+=360;
-		e_sect = (int) Math.ceil(e_phi/60);
-		Ve = new LorentzVector(px,py,pz,e_mom)
+		p_sect = (int) Math.ceil(e_phi/60);
+		Ve = new LorentzVector(px,py,pz,p_momentum)
 		e_phi = (float) Math.toDegrees(Ve.phi())
-		e_theta = (float) Math.toDegrees(Ve.theta())
+		float p_theta = (float) Math.toDegrees(Ve.theta())
+		return p_momentum, p_theta
 }
 
 """------------------------ Variable Definitions -------------------------"""
@@ -97,16 +98,16 @@ def run = args[0].toInteger()
 float EB = 10.6f
 if(run>6607) EB=10.2f
 
-int e_index, e_sect
-float e_mom, e_theta, e_phi, e_vx, e_vy, e_vz
+int e_index, p_sect
+float e_phi, e_vx, e_vy, e_vz
 LorentzVector Ve = new LorentzVector()
 
 TDirectory out = new TDirectory()
 out.mkdir('/'+run)
 out.cd('/'+run)
 
-H_elec_theta_mom =(0..<6).collect{
-	def h1 = new H2F("H_elec_theta_mom_S"+(it+1), "H_elec_theta_mom_S"+(it+1),100,0,EB,100,0,40);
+H_proton_theta_momentum =(0..<6).collect{
+	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,40);
 	return h1
 }
 
@@ -120,7 +121,7 @@ for (arg in args){
 }
 
 (0..<6).each{
-	out.addDataSet(H_elec_theta_mom[it])
+	out.addDataSet(H_proton_theta_momentum[it])
 }
 
-out.writeFile('electron_pID_new'+run+'.hipo')
+out.writeFile('proton_pID_new'+run+'.hipo')
