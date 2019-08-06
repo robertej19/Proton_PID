@@ -62,11 +62,11 @@ public boolean isElectron(DataBank recPart, int p){
 }
 
 public boolean pID_default_electron_cut(DataBank recPart, int p){
-  if(recPart.getInt("pid",p)==11) return true;
+  if(recPart.getInt("pid",p)==2212) return true;
   else return false;
 }
 public boolean pID_charge_cut(DataBank recPart, int p){
-  if(recPart.getInt("charge",p)==-1) return true;
+  if(recPart.getInt("charge",p)==1) return true;
   else return false;
 }
 
