@@ -54,11 +54,11 @@ public boolean hasElectron(DataBank reconstructedParticle){
 	return found
 }
 public boolean isElectron(DataBank reconstructedParticle, int p){
-	if (pID_default_ID_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
+	//if (pID_default_ID_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
 		e_index=p
 		return true
-	}
-	else return false
+	//}
+//	else return false
 }
 
 public boolean pID_default_ID_cut(DataBank reconstructedParticle, int p){
