@@ -36,50 +36,53 @@ public void processEvent(DataEvent event) {
 	e_index=-1
 	if (!hasElectron(particleBank)) return
 	if (e_index>-1){
-		(p_momentum, p_theta) = makeElectron(particleBank)
+		(p_momentum, p_theta) = makeElectron(particleBank,e_index)
 		fillHists(p_momentum,p_theta)
 	}
 	else return;
 }
 
 
-public boolean hasElectron(DataBank recPart){
+public boolean hasElectron(DataBank reconstructedParticle){
 	boolean found = false
-	for(int p=0;p<recPart.rows();p++){
-		if (isElectron(recPart,p)){
+	for(int p=0;p<reconstructedParticle.rows();p++){
+		if (isElectron(reconstructedParticle,p)){
 			if (found) System.out.println ("Error, two or more electrons found!")
 			found=true
 		}
 	}
 	return found
 }
-public boolean isElectron(DataBank recPart, int p){
-	if (pID_default_electron_cut(recPart,p)&& pID_charge_cut(recPart,p)){
+public boolean isElectron(DataBank reconstructedParticle, int p){
+	if (pID_default_ID_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
 		e_index=p
 		return true
 	}
 	else return false
 }
 
-public boolean pID_default_electron_cut(DataBank recPart, int p){
-  if(recPart.getInt("pid",p)==2212) return true;
+public boolean pID_default_ID_cut(DataBank reconstructedParticle, int p){
+  if(reconstructedParticle.getInt("pid",p)==2212) return true;
   else return false;
 }
-public boolean pID_charge_cut(DataBank recPart, int p){
-  if(recPart.getInt("charge",p)==1) return true;
+public boolean pID_charge_cut(DataBank reconstructedParticle, int p){
+  if(reconstructedParticle.getInt("charge",p)==1) return true;
   else return false;
 }
 
-def makeElectron(DataBank recPart){
+float e_phi, e_vx, e_vy, e_vz
+LorentzVector Ve = new LorentzVector()
+
+def makeElectron(DataBank reconstructedParticle,int e_index){
 		int ei=e_index
 		println("e_index ei is: "+ei)
-		float px = recPart.getFloat("px",ei)
-		float py = recPart.getFloat("py",ei)
-		float pz = recPart.getFloat("pz",ei)
+		float px = reconstructedParticle.getFloat("px",ei)
+		float py = reconstructedParticle.getFloat("py",ei)
+		float pz = reconstructedParticle.getFloat("pz",ei)
 		float p_momentum = (float)Math.sqrt(px*px+py*py+pz*pz)
-		e_vz = recPart.getFloat("vz",ei)
-		e_vx = recPart.getFloat("vx",ei)
-		e_vy = recPart.getFloat("vy",ei)
+		e_vz = reconstructedParticle.getFloat("vz",ei)
+		e_vx = reconstructedParticle.getFloat("vxx",ei)
+		e_vy = reconstructedParticle.getFloat("vy",ei)
 		e_phi = (float)Math.toDegrees(Math.atan2(py,px))
 		if(e_phi<0) e_phi+=360;
 		e_phi=360-e_phi;
@@ -99,8 +102,7 @@ float EB = 10.6f
 if(run>6607) EB=10.2f
 
 int e_index, p_sect
-float e_phi, e_vx, e_vy, e_vz
-LorentzVector Ve = new LorentzVector()
+
 
 TDirectory out = new TDirectory()
 out.mkdir('/'+run)
