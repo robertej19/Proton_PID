@@ -128,6 +128,7 @@ H_elec_theta_mom =(0..<6).collect{
 filenum=-1
 for (arg in args){
 	filenum=filenum+1
+	println("filenum is" +filenum)
 	if (filenum==0) continue
 	processFile(arg)
 }
