@@ -36,7 +36,7 @@ public void processEvent(DataEvent event) {
 	e_index=-1
 	if (!hasElectron(particleBank)) return
 	if (e_index>-1){
-		p_momentum, p_theta = makeElectron(particleBank)
+		(p_momentum, p_theta) = makeElectron(particleBank)
 		fillHists(p_momentum,p_theta)
 	}
 	else return;
@@ -89,7 +89,7 @@ public void makeElectron(DataBank recPart){
 		Ve = new LorentzVector(px,py,pz,p_momentum)
 		e_phi = (float) Math.toDegrees(Ve.phi())
 		float p_theta = (float) Math.toDegrees(Ve.theta())
-		return p_momentum, p_theta
+		return [p_momentum, p_theta]
 }
 
 """------------------------ Variable Definitions -------------------------"""
