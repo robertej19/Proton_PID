@@ -70,7 +70,7 @@ public boolean pID_charge_cut(DataBank recPart, int p){
   else return false;
 }
 
-public void makeElectron(DataBank recPart){
+public float makeElectron(DataBank recPart){
 		int ei=e_index
 		println("e_index ei is: "+ei)
 		float px = recPart.getFloat("px",ei)
