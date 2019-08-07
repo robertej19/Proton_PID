@@ -88,7 +88,7 @@ public void fillHists(p_momentum,beta){
 }
 
 
-float p_phi, p_vx, p_vy, p_vz
+float p_phi, p_theta, p_vx, p_vy, p_vz
 LorentzVector Ve = new LorentzVector()
 
 def makeProton(DataBank reconstructedParticle,int p_ind){
