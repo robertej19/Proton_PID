@@ -40,7 +40,7 @@ public void processEvent(DataEvent event) {
 	e_index=-1
 	if (!hasElectron(particleBank)) return
 	if (e_index>-1){
-		(p_momentum, p_theta) = makeElectron(particleBank,e_index)
+		(p_momentum, beta_groot) = makeElectron(particleBank,e_index)
 		float tofTime =	event.getBank("FTOF::hits").getFloat("time",e_index)
 		//float pl =	event.getBank("FTOF::hits").getFloat("path",e_index)
 		//println("Pathlength is: "+pl)
@@ -48,7 +48,7 @@ public void processEvent(DataEvent event) {
 		float dis = 2
 		float beta = dis/tof
 		//println("Beta: "+beta)
-		fillHists(p_momentum,beta)
+		fillHists(p_momentum,beta_groot)
 	}
 	else return;
 }
@@ -123,7 +123,7 @@ out.mkdir('/'+run)
 out.cd('/'+run)
 
 H_proton_theta_momentum =(0..<6).collect{
-	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,1);
+	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,2);
 	return h1
 }
 
