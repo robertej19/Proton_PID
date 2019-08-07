@@ -42,12 +42,12 @@ public void processEvent(DataEvent event) {
 	if (e_index>-1){
 		(p_momentum, p_theta) = makeElectron(particleBank,e_index)
 		float tofTime =	event.getBank("FTOF::hits").getFloat("time",e_index)
-		float pl =	event.getBank("FTOF::hits").getFloat("path",e_index)
-		print("Pathlength is: "+pl)
+		//float pl =	event.getBank("FTOF::hits").getFloat("path",e_index)
+		//println("Pathlength is: "+pl)
 		float tof = tofTime - startTime
 		float dis = 2
 		float beta = dis/tof
-		println("Beta: "+beta)
+		//println("Beta: "+beta)
 		fillHists(p_momentum,beta)
 	}
 	else return;
@@ -90,6 +90,8 @@ def makeElectron(DataBank reconstructedParticle,int e_index){
 		float px = reconstructedParticle.getFloat("px",ei)
 		float py = reconstructedParticle.getFloat("py",ei)
 		float pz = reconstructedParticle.getFloat("pz",ei)
+		float beta = reconstructedParticle.getFloat("beta",ei)
+		println("Groot beta: "+beta)
 		float p_momentum = (float)Math.sqrt(px*px+py*py+pz*pz)
 		e_vz = reconstructedParticle.getFloat("vz",ei)
 		e_vx = reconstructedParticle.getFloat("vx",ei)
