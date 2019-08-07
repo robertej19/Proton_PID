@@ -37,7 +37,7 @@ public void processEvent(DataEvent event) {
 	p_ind=-1
 	if (!hasProton(particleBank)) return
 	if (p_ind>-1){
-		(p_momentum, beta_groot) = makeProton(particleBank,p_ind)
+		(p_momentum, beta_groot,p_theta,p_phi,p_vz) = makeProton(particleBank,p_ind)
 		float tofTime =	event.getBank("FTOF::hits").getFloat("time",p_ind)
 		//float pl =	event.getBank("FTOF::hits").getFloat("path",p_ind)
 		//println("Pathlength is: "+pl)
@@ -45,7 +45,7 @@ public void processEvent(DataEvent event) {
 		//float dis = 2
 		//float beta = dis/tof
 		//println("Beta: "+beta)
-		fillHists(p_momentum,beta_groot)
+		fillHists(p_momentum,beta_groot,p_theta,p_phi,p_vz)
 	}
 	else return;
 }
@@ -78,7 +78,7 @@ public boolean pID_charge_cut(DataBank reconstructedParticle, int p){
   else return false;
 }
 
-public void fillHists(p_momentum,beta){
+public void fillHists(p_momentum,beta,p_theta,p_phi,p_vz){
 	H_proton_beta_momentum[p_sect-1].fill(p_momentum,beta)
 	H_proton_mom[p_sect-1].fill(p_momentum);
 	H_proton_vz_mom[p_sect-1].fill(p_momentum,p_vz);
@@ -88,7 +88,7 @@ public void fillHists(p_momentum,beta){
 }
 
 
-float p_phi, p_theta, p_vx, p_vy, p_vz
+float p_vx, p_vy
 LorentzVector Ve = new LorentzVector()
 
 def makeProton(DataBank reconstructedParticle,int p_ind){
@@ -113,7 +113,7 @@ def makeProton(DataBank reconstructedParticle,int p_ind){
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
 		float rbeta = (float)Math.sqrt(p_momentum*p_momentum/p_mass/p_mass/(1+p_momentum*p_momentum/p_mass/p_mass))
-		return [p_momentum, rbeta]
+		return [p_momentum, rbeta,p_theta,p_phi,p_vz]
 }
 
 """------------------------ Variable Definitions -------------------------"""
