@@ -18,7 +18,7 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 """------------------------ Function Definitions -------------------------"""
 
 public void fillHists(p_momentum,beta){
-	H_proton_theta_momentum[p_sect-1].fill(p_momentum,starttime)
+	H_proton_theta_momentum[p_sect-1].fill(p_momentum,beta)
 }
 
 public void processFile(String filename) {
@@ -41,7 +41,7 @@ public void processEvent(DataEvent event) {
 	if (!hasElectron(particleBank)) return
 	if (e_index>-1){
 		(p_momentum, p_theta) = makeElectron(particleBank,e_index)
-		fillHists(p_momentum,p_theta)
+		fillHists(p_momentum,starttime)
 	}
 	else return;
 }
