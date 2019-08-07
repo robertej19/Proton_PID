@@ -106,7 +106,7 @@ def makeElectron(DataBank reconstructedParticle,int e_index){
 		e_phi = (float) Math.toDegrees(Ve.phi())
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
-		float beta = (float)Math.sqrt(p_momentum*p_momentum/p_mass/p_mass/(1+p_momentum*p_momentum/p_mass/p_mass))
+		float rbeta = (float)Math.sqrt(p_momentum*p_momentum/p_mass/p_mass/(1+p_momentum*p_momentum/p_mass/p_mass))
 		return [p_momentum, beta]
 }
 
