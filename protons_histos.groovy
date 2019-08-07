@@ -10,6 +10,7 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 for(arg in args) {
   TDirectory dir = new TDirectory()
   dir.readFile(arg)
+  println(dir.ls())
   def h1 = dir.getObject(String.format('/5038/H_proton_beta_momentum_S3'))
   //...
 //
