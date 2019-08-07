@@ -36,11 +36,13 @@ public void processEvent(DataEvent event) {
 	DataBank particleBank = event.getBank("REC::Particle");
 	//DataBank forwardTOFBank = event.getBank("REC::Particle")
 	//if(event.hasBank("REC::Event"))STT =
-	println(starttime)
+	//println(starttime)
 	e_index=-1
 	if (!hasElectron(particleBank)) return
 	if (e_index>-1){
 		(p_momentum, p_theta) = makeElectron(particleBank,e_index)
+		float tofTime =	event.getBank("FTOF::hits").getFloat("time",e_index)
+		println("TOF TIME: "+tofTime)
 		fillHists(p_momentum,starttime)
 	}
 	else return;
@@ -51,7 +53,7 @@ public boolean hasElectron(DataBank reconstructedParticle){
 	boolean found = false
 	for(int p=0;p<reconstructedParticle.rows();p++){
 		if (isElectron(reconstructedParticle,p)){
-			if (found) System.out.println ("Error, two or more electrons found!")
+			//if (found) System.out.println ("Error, two or more electrons found!")
 			found=true
 		}
 	}
@@ -79,7 +81,7 @@ LorentzVector Ve = new LorentzVector()
 
 def makeElectron(DataBank reconstructedParticle,int e_index){
 		int ei=e_index
-		println("e_index ei is: "+ei)
+		//println("e_index ei is: "+ei)
 		float px = reconstructedParticle.getFloat("px",ei)
 		float py = reconstructedParticle.getFloat("py",ei)
 		float pz = reconstructedParticle.getFloat("pz",ei)
