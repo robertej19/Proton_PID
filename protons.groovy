@@ -17,8 +17,8 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 
 """------------------------ Function Definitions -------------------------"""
 
-public void fillHists(p_momentum,time){
-	H_proton_theta_momentum[p_sect-1].fill(p_momentum,1/time)
+public void fillHists(p_momentum,beta){
+	H_proton_theta_momentum[p_sect-1].fill(p_momentum,beta)
 }
 
 public void processFile(String filename) {
@@ -42,9 +42,11 @@ public void processEvent(DataEvent event) {
 	if (e_index>-1){
 		(p_momentum, p_theta) = makeElectron(particleBank,e_index)
 		float tofTime =	event.getBank("FTOF::hits").getFloat("time",e_index)
-		println("TOF TIME: "+tofTime)
 		float tof = tofTime - startTime
-		fillHists(p_momentum,tof)
+		float dis = 2
+		float beta = dis/tof
+		println("Beta: "+beta)
+		fillHists(p_momentum,beta)
 	}
 	else return;
 }
@@ -118,7 +120,7 @@ out.mkdir('/'+run)
 out.cd('/'+run)
 
 H_proton_theta_momentum =(0..<6).collect{
-	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,100);
+	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,1);
 	return h1
 }
 
