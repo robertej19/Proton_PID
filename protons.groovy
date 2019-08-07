@@ -33,6 +33,8 @@ public void processFile(String filename) {
 public void processEvent(DataEvent event) {
 	if(!event.hasBank("REC::Particle")) return
 	DataBank particleBank = event.getBank("REC::Particle");
+	DataBank forwardTOFBank = event.getBank("REC::FTOF")
+	println(forwardTOFBank.getClass())
 	e_index=-1
 	if (!hasElectron(particleBank)) return
 	if (e_index>-1){
