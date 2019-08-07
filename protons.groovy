@@ -42,7 +42,7 @@ public void processEvent(DataEvent event) {
 	if (e_index>-1){
 		(p_momentum, p_theta) = makeElectron(particleBank,e_index)
 		float tofTime =	event.getBank("FTOF::hits").getFloat("time",e_index)
-		float pl =	event.getBank("FTOF::hits").getFloat("pathlength",e_index)
+		float pl =	event.getBank("FTOF::hits").getFloat("path",e_index)
 		print("Pathlength is: "+pl)
 		float tof = tofTime - startTime
 		float dis = 2
