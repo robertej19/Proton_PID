@@ -21,7 +21,8 @@ for(arg in args) {
   canvas.setAxisTitleSize(18);
   canvas.setAxisFontSize(18);
   canvas.setTitleSize(18);
-  canvas.cd(0);canvas.draw(h1);
+  //canvas.cd(0);
+	canvas.draw(h1);
   //...
   //canvas.cd(n-1);canvas.draw(h_n);
   canvas.save('dumped_histogram'+arg+'.pdf')
