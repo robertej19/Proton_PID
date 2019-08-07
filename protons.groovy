@@ -18,7 +18,7 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 """------------------------ Function Definitions -------------------------"""
 
 public void fillHists(p_momentum,beta){
-	H_proton_theta_momentum[p_sect-1].fill(p_momentum,beta)
+	H_proton_theta_momentum[p_sect-1].fill(p_momentum,starttime)
 }
 
 public void processFile(String filename) {
@@ -115,7 +115,7 @@ out.mkdir('/'+run)
 out.cd('/'+run)
 
 H_proton_theta_momentum =(0..<6).collect{
-	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,1);
+	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,100);
 	return h1
 }
 
