@@ -18,7 +18,7 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 """------------------------ Function Definitions -------------------------"""
 
 public void fillHists(p_momentum,beta){
-	H_proton_theta_momentum[p_sect-1].fill(p_momentum,beta)
+	H_proton_beta_momentum[p_sect-1].fill(p_momentum,beta)
 }
 
 public void processFile(String filename) {
@@ -107,7 +107,7 @@ def makeElectron(DataBank reconstructedParticle,int e_index){
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
 		float rbeta = (float)Math.sqrt(p_momentum*p_momentum/p_mass/p_mass/(1+p_momentum*p_momentum/p_mass/p_mass))
-		return [p_momentum, beta]
+		return [p_momentum, rbeta]
 }
 
 """------------------------ Variable Definitions -------------------------"""
@@ -122,8 +122,8 @@ TDirectory out = new TDirectory()
 out.mkdir('/'+run)
 out.cd('/'+run)
 
-H_proton_theta_momentum =(0..<6).collect{
-	def h1 = new H2F("H_proton_theta_momentum_S"+(it+1), "H_proton_theta_momentum_S"+(it+1),100,0,EB,100,0,2);
+H_proton_beta_momentum =(0..<6).collect{
+	def h1 = new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),300,0,EB,100,0,1);
 	return h1
 }
 
@@ -137,7 +137,7 @@ for (arg in args){
 }
 
 (0..<6).each{
-	out.addDataSet(H_proton_theta_momentum[it])
+	out.addDataSet(H_proton_beta_momentum[it])
 }
 
 out.writeFile('proton_pID_new'+run+'.hipo')
