@@ -42,6 +42,8 @@ public void processEvent(DataEvent event) {
 	if (e_index>-1){
 		(p_momentum, p_theta) = makeElectron(particleBank,e_index)
 		float tofTime =	event.getBank("FTOF::hits").getFloat("time",e_index)
+		float pl =	event.getBank("FTOF::hits").getFloat("pathlength",e_index)
+		print("Pathlength is: "+pl)
 		float tof = tofTime - startTime
 		float dis = 2
 		float beta = dis/tof
@@ -113,7 +115,6 @@ float EB = 10.6f
 if(run>6607) EB=10.2f
 
 int e_index, p_sect
-
 
 TDirectory out = new TDirectory()
 out.mkdir('/'+run)
