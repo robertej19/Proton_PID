@@ -97,7 +97,7 @@ def makeProton(DataBank reconstructedParticle,int p_ind){
 		float py = reconstructedParticle.getFloat("py",p_ind)
 		float pz = reconstructedParticle.getFloat("pz",p_ind)
 		float beta = reconstructedParticle.getFloat("beta",p_ind)
-		println("Groot beta: "+beta)
+		//println("Groot beta: "+beta)
 		float p_momentum = (float)Math.sqrt(px*px+py*py+pz*pz)
 		p_vz = reconstructedParticle.getFloat("vz",p_ind)
 		p_vx = reconstructedParticle.getFloat("vx",p_ind)
