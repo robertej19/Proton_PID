@@ -113,7 +113,7 @@ def makeProton(DataBank reconstructedParticle,int p_ind){
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
 		float rbeta = (float)Math.sqrt(p_momentum*p_momentum/p_mass/p_mass/(1+p_momentum*p_momentum/p_mass/p_mass))
-		return [p_momentum, rbeta,p_theta,p_phi,p_vz]
+		return [p_momentum, beta,p_theta,p_phi,p_vz]
 }
 
 """------------------------ Variable Definitions -------------------------"""
