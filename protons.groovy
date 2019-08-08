@@ -31,21 +31,13 @@ public void processEvent(DataEvent event) {
 	if(!event.hasBank("REC::Particle")) return
 	float startTime = event.getBank("REC::Event").getFloat("startTime",0);
 	DataBank particleBank = event.getBank("REC::Particle");
-	//DataBank forwardTOFBank = event.getBank("REC::Particle")
-	//if(event.hasBank("REC::Event"))STT =
-	//println(starttime)
+
 	p_ind=-1
 	if (!hasProton(particleBank)) return
 	if (p_ind>-1){
-		(p_momentum, beta_groot,p_theta,p_phi,p_vz) = makeProton(particleBank,p_ind)
-		float tofTime =	event.getBank("FTOF::hits").getFloat("time",p_ind)
-		//float pl =	event.getBank("FTOF::hits").getFloat("path",p_ind)
-		//println("Pathlength is: "+pl)
-		//float tof = tofTime - startTime
-		//float dis = 2
-		//float beta = dis/tof
-		//println("Beta: "+beta)
-		fillHists(p_momentum,beta_groot,p_theta,p_phi,p_vz)
+		(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeProton(particleBank,p_ind)
+
+		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc)
 	}
 	else return;
 }
@@ -53,17 +45,19 @@ public void processEvent(DataEvent event) {
 
 public boolean hasProton(DataBank reconstructedParticle){
 	boolean found = false
-	for(int p=0;p<reconstructedParticle.rows();p++){
-		if (isProton(reconstructedParticle,p)){
-			//if (found) System.out.println ("Error, two or more Protons found!")
+	for(int p=0;p<reconstructedParticle.rows();p++){ //Loop over all particles in the event
+		if (isProton(reconstructedParticle,p)){ //If we find two or more protons, throw out the event
+			if (found) System.out.println ("Error, two or more Protons found!")
 			found=true
 		}
 	}
 	return found
 }
+
 public boolean isProton(DataBank reconstructedParticle, int p){
-	if (pID_default_ID_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
-		p_ind=p
+	//if (pID_default_ID_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
+	if (pID_charge_cut(reconstructedParticle,p)){
+		p_ind=p //This gives us the index of the row that has the particle event
 		return true
 	}
 	else return false
@@ -73,36 +67,27 @@ public boolean pID_default_ID_cut(DataBank reconstructedParticle, int p){
   if(reconstructedParticle.getInt("pid",p)==2212) return true;
   else return false;
 }
+
+//Remove the above cut with gaussian on above
+
 public boolean pID_charge_cut(DataBank reconstructedParticle, int p){
   if(reconstructedParticle.getInt("charge",p)==1) return true;
   else return false;
 }
 
-public void fillHists(p_momentum,beta,p_theta,p_phi,p_vz){
-	H_proton_beta_momentum[p_sect-1].fill(p_momentum,beta)
-	H_proton_mom[p_sect-1].fill(p_momentum);
-	H_proton_vz_mom[p_sect-1].fill(p_momentum,p_vz);
-	H_proton_theta_mom[p_sect-1].fill(p_momentum,p_theta)
-	H_proton_phi_mom[p_sect-1].fill(p_momentum,p_phi)
-	H_proton_theta_phi[p_sect-1].fill(p_phi,p_theta);
-}
-
-
-float p_vx, p_vy
-LorentzVector Ve = new LorentzVector()
+//LorentzVector Ve = new LorentzVector()
 
 def makeProton(DataBank reconstructedParticle,int p_ind){
 		//println("p_ind p_ind is: "+p_ind)
 		float px = reconstructedParticle.getFloat("px",p_ind)
 		float py = reconstructedParticle.getFloat("py",p_ind)
 		float pz = reconstructedParticle.getFloat("pz",p_ind)
-		float beta = reconstructedParticle.getFloat("beta",p_ind)
-		//println("Groot beta: "+beta)
+		float beta_recon = reconstructedParticle.getFloat("beta",p_ind)
 		float p_momentum = (float)Math.sqrt(px*px+py*py+pz*pz)
-		p_vz = reconstructedParticle.getFloat("vz",p_ind)
-		p_vx = reconstructedParticle.getFloat("vx",p_ind)
-		p_vy = reconstructedParticle.getFloat("vy",p_ind)
-		p_phi = (float)Math.toDegrees(Math.atan2(py,px))
+		float p_vz = reconstructedParticle.getFloat("vz",p_ind)
+		float p_vx = reconstructedParticle.getFloat("vx",p_ind)
+		float p_vy = reconstructedParticle.getFloat("vy",p_ind)
+		float p_phi = (float)Math.toDegrees(Math.atan2(py,px))
 		if(p_phi<0) p_phi+=360;
 		p_phi=360-p_phi;
 		p_phi=p_phi-150;
@@ -112,8 +97,18 @@ def makeProton(DataBank reconstructedParticle,int p_ind){
 		p_phi = (float) Math.toDegrees(Ve.phi())
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
-		float rbeta = (float)Math.sqrt(p_momentum*p_momentum/p_mass/p_mass/(1+p_momentum*p_momentum/p_mass/p_mass))
-		return [p_momentum, beta,p_theta,p_phi,p_vz]
+		float beta_calc = (float)Math.sqrt(p_momentum*p_momentum/p_mass/p_mass/(1+p_momentum*p_momentum/p_mass/p_mass))
+		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc]
+}
+
+public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc){
+	H_proton_beta_momentum[p_sect-1].fill(p_momentum,beta_recon)
+	H_proton_mom[p_sect-1].fill(p_momentum);
+	H_beta_recon_beta_calc[p_sect-1].fill(beta_recon-beta_calc);
+	H_proton_vz_mom[p_sect-1].fill(p_momentum,p_vz);
+	H_proton_theta_mom[p_sect-1].fill(p_momentum,p_theta)
+	H_proton_phi_mom[p_sect-1].fill(p_momentum,p_phi)
+	H_proton_theta_phi[p_sect-1].fill(p_phi,p_theta);
 }
 
 """------------------------ Variable Definitions -------------------------"""
@@ -130,33 +125,31 @@ out.cd('/'+run)
 
 H_proton_beta_momentum =(0..<6).collect{
 	def h1 = new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),300,0,EB,100,0,1);
-	return h1
-}
+	return h1}
+
+H_beta_recon_beta_calc =(0..5).collect{
+	def h1 = new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1);
+	return h1}
 
 H_proton_mom =(0..5).collect{
 	def h1 = new H1F("H_proton_mom_S"+(it+1), "H_proton_mom_S"+(it+1),100, 0, EB);
-	return h1
-}
+	return h1}
 
 H_proton_vz_mom =(0..<6).collect{
 	def h1 = new H2F("H_proton_vz_mom_S"+(it+1), "H_proton_vz_mom_S"+(it+1),100,0,EB,100,-25,25);
-	return h1
-}
+	return h1}
 
 H_proton_theta_mom =(0..<6).collect{
 	def h1 = new H2F("H_proton_theta_mom_S"+(it+1), "H_proton_theta_mom_S"+(it+1),100,0,EB,100,0,40);
-	return h1
-}
+	return h1}
 
 H_proton_phi_mom = (0..<6).collect{
 	def h1 = new H2F("H_proton_phi_mom_S"+(it+1), "H_proton_phi_mom_S"+(it+1),100,0,EB,100,-180,180);
-	return h1
-}
+	return h1}
 
 H_proton_theta_phi =(0..<6).collect{
 	def h1 = new H2F("H_proton_theta_phi_S"+(it+1), "H_proton_theta_phi_S"+(it+1),100,-180,180,100,0,40);
-	return h1
-}
+	return h1}
 
 """------------------------ Start of Program -------------------------"""
 
@@ -170,6 +163,7 @@ for (arg in args){
 (0..<6).each{
 	out.addDataSet(H_proton_beta_momentum[it])
 	out.addDataSet(H_proton_mom[it])
+	out.addDataSet(H_beta_recon_beta_calc[it])
 	out.addDataSet(H_proton_vz_mom[it])
 	out.addDataSet(H_proton_theta_mom[it])
 	out.addDataSet(H_proton_phi_mom[it])
