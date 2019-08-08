@@ -129,7 +129,7 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc]
 }
 
-public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect){
+public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path){
 	H_proton_beta_momentum[p_sect-1].fill(p_momentum,beta_recon)
 	H_proton_mom[p_sect-1].fill(p_momentum);
 	H_beta_recon_beta_calc[p_sect-1].fill(beta_recon-beta_calc);
@@ -140,7 +140,7 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 
 	H_proton_time[p_sect-1].fill(p_time);
 	H_proton_path[p_sect-1].fill(p_path);
-	H_proton_sect.fill(p_sect);
+	//H_proton_sect.fill(p_sect);
 
 
 }
