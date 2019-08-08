@@ -44,9 +44,9 @@ public void processEvent(DataEvent event) {
 		//println("Index is: "+recon_Scint.getInt("index",p_ind))
 		//println("Detector is: "+recon_Scint.getInt("detector",p_ind))
 		if(recon_Scint.getInt("detector",p_ind)==12){
-			//println("Layer is: "+recon_Scint.getInt("layer",p_ind))
+			println("Layer is: "+recon_Scint.getInt("layer",p_ind))
 			p_sect = recon_Scint.getInt("sector",p_ind)
-			//println("Sector is: "+recon_Scint.getInt("sector",p_ind))
+			println("Sector is: "+recon_Scint.getInt("sector",p_ind))
 			p_time = recon_Scint.getFloat("time",p_ind)
 			//println("Time is: "+recon_Scint.getFloat("time",p_ind))
 			p_path = recon_Scint.getFloat("path",p_ind)
