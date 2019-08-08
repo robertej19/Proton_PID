@@ -38,19 +38,24 @@ public void processEvent(DataEvent event) {
 		(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p_ind)
 
 		DataBank recon_Scint = event.getBank("REC::Scintillator");
+		float p_time = 0
+		float p_path = 0
+		int p_sect = 0
 		//println("Index is: "+recon_Scint.getInt("index",p_ind))
 		//println("Detector is: "+recon_Scint.getInt("detector",p_ind))
 		if(recon_Scint.getInt("detector",p_ind)==12){
 			println("Layer is: "+recon_Scint.getInt("layer",p_ind))
+			p_sect = recon_Scint.getInt("sector",p_ind)
 			println("Sector is: "+recon_Scint.getInt("sector",p_ind))
-			float p_time = recon_Scint.getFloat("time",p_ind)
+			p_time = recon_Scint.getFloat("time",p_ind)
 			println("Time is: "+recon_Scint.getFloat("time",p_ind))
-			float p_path = recon_Scint.getFloat("path",p_ind)
+			p_path = recon_Scint.getFloat("path",p_ind)
 			println("Path is: "+recon_Scint.getFloat("path",p_ind))
 			//Question 88 here:
-			fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
+			//fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
 		}
 
+		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect)
 
 	}
 	else return;
