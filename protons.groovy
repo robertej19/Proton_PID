@@ -37,6 +37,9 @@ public void processEvent(DataEvent event) {
 	if (p_ind>-1){
 		(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p_ind)
 
+		DataBank recon_Scint = event.getBank("REC::Scintillator");
+		println(recon_Scint.getFloat("index",p_ind))
+
 		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc)
 	}
 	else return;
@@ -73,7 +76,7 @@ public boolean pID_default_ID_cut(DataBank reconstructedParticle, int p){
 
 public boolean pID_beta_momentum_cut(DataBank reconstructedParticle, int p){
 	(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p)
-	if((beta_recon>1.1*beta_calc) || (beta_recon<0.9*beta_calc)) return true;
+	if((beta_recon<1.05*beta_calc) && (beta_recon>0.95*beta_calc)) return true;
   else return false;
 
 }
@@ -87,6 +90,7 @@ public boolean pID_charge_cut(DataBank reconstructedParticle, int p){
 
 def makeParticle(DataBank reconstructedParticle,int p_ind){
 		//println("p_ind p_ind is: "+p_ind)
+		"REC::Scintillator"
 		float px = reconstructedParticle.getFloat("px",p_ind)
 		float py = reconstructedParticle.getFloat("py",p_ind)
 		float pz = reconstructedParticle.getFloat("pz",p_ind)
@@ -105,7 +109,7 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 		p_phi = (float) Math.toDegrees(Ve.phi())
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
-		float beta_calc = (float)Math.sqrt(p_momentum*p_momentum/p_mass/p_mass/(1+p_momentum*p_momentum/p_mass/p_mass))
+		float beta_calc = (float)Math.sqrt(p_momentum*p_momentum/(p_momentum*p_momentum+p_mass*p_mass))
 		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc]
 }
 
