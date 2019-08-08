@@ -55,7 +55,7 @@ public void processEvent(DataEvent event) {
 			//fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
 		}
 
-		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect)
+		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
 
 	}
 	else return;
@@ -177,9 +177,9 @@ H_proton_path =(0..5).collect{
 	def h1 = new H1F("H_proton_path_S"+(it+1), "H_proton_path_S"+(it+1),100, 0, 1000);
 	return h1}
 
-H_proton_sect ={
-	def h1 = new H1F("H_proton_sect", "H_proton_sect",100, 0, 7);
-	return h1}
+//H_proton_sect ={
+//	def h1 = new H1F("H_proton_sect", "H_proton_sect",100, 0, 7);
+//	return h1}
 
 H_proton_vz_mom =(0..<6).collect{
 	def h1 = new H2F("H_proton_vz_mom_S"+(it+1), "H_proton_vz_mom_S"+(it+1),100,0,EB,100,-25,25);
@@ -218,6 +218,6 @@ for (arg in args){
 	out.addDataSet(H_proton_path[it])
 }
 
-out.addDataSet(H_proton_sect)
+//out.addDataSet(H_proton_sect)
 
 out.writeFile('proton_pID_new'+run+'.hipo')
