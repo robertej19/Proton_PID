@@ -41,21 +41,22 @@ public void processEvent(DataEvent event) {
 		float p_time = 0
 		float p_path = 0
 		int p_sect = 0
+		int p_layer = 0
 		//println("Index is: "+recon_Scint.getInt("index",p_ind))
 		//println("Detector is: "+recon_Scint.getInt("detector",p_ind))
 		if(recon_Scint.getInt("detector",p_ind)==12){
-			println("Layer is: "+recon_Scint.getInt("layer",p_ind))
+			p_layer = recon_Scint.getInt("layer",p_ind)
 			p_sect = recon_Scint.getInt("sector",p_ind)
-			println("Sector is: "+recon_Scint.getInt("sector",p_ind))
 			p_time = recon_Scint.getFloat("time",p_ind)
-			//println("Time is: "+recon_Scint.getFloat("time",p_ind))
 			p_path = recon_Scint.getFloat("path",p_ind)
-			//println("Path is: "+recon_Scint.getFloat("path",p_ind))
 			//Question 88 here:
 			//fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
 		}
+		else{
+			println("Dectector is not 12, instead it is: "recon_Scint.getInt("detector",p_ind))
+		}
 
-		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
+		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer)
 
 	}
 	else return;
@@ -115,21 +116,15 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 		float p_vz = reconstructedParticle.getFloat("vz",p_ind)
 		float p_vx = reconstructedParticle.getFloat("vx",p_ind)
 		float p_vy = reconstructedParticle.getFloat("vy",p_ind)
-		float p_phi = (float)Math.toDegrees(Math.atan2(py,px))
-		if(p_phi<0) p_phi+=360;
-		p_phi=360-p_phi;
-		p_phi=p_phi-150;
-		if (p_phi<0) p_phi+=360;
-		p_sect = (int) Math.ceil(p_phi/60);
 		Ve = new LorentzVector(px,py,pz,p_momentum)
-		p_phi = (float) Math.toDegrees(Ve.phi())
+		float p_phi = (float) Math.toDegrees(Ve.phi())
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
 		float beta_calc = (float)Math.sqrt(p_momentum*p_momentum/(p_momentum*p_momentum+p_mass*p_mass))
 		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc]
 }
 
-public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path){
+public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer){
 	H_proton_beta_momentum[p_sect-1].fill(p_momentum,beta_recon)
 	H_proton_mom[p_sect-1].fill(p_momentum);
 	H_beta_recon_beta_calc[p_sect-1].fill(beta_recon-beta_calc);
