@@ -44,13 +44,13 @@ public void processEvent(DataEvent event) {
 		//println("Index is: "+recon_Scint.getInt("index",p_ind))
 		//println("Detector is: "+recon_Scint.getInt("detector",p_ind))
 		if(recon_Scint.getInt("detector",p_ind)==12){
-			println("Layer is: "+recon_Scint.getInt("layer",p_ind))
+			//println("Layer is: "+recon_Scint.getInt("layer",p_ind))
 			p_sect = recon_Scint.getInt("sector",p_ind)
-			println("Sector is: "+recon_Scint.getInt("sector",p_ind))
+			//println("Sector is: "+recon_Scint.getInt("sector",p_ind))
 			p_time = recon_Scint.getFloat("time",p_ind)
-			println("Time is: "+recon_Scint.getFloat("time",p_ind))
+			//println("Time is: "+recon_Scint.getFloat("time",p_ind))
 			p_path = recon_Scint.getFloat("path",p_ind)
-			println("Path is: "+recon_Scint.getFloat("path",p_ind))
+			//println("Path is: "+recon_Scint.getFloat("path",p_ind))
 			//Question 88 here:
 			//fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
 		}
@@ -66,7 +66,7 @@ public boolean hasProton(DataBank reconstructedParticle){
 	boolean found = false
 	for(int p=0;p<reconstructedParticle.rows();p++){ //Loop over all particles in the event
 		if (isProton(reconstructedParticle,p)){ //If we find two or more protons, throw out the event
-			if (found) System.out.println ("Error, two or more Protons found!")
+			//if (found) System.out.println ("Error, two or more Protons found!")
 			found=true
 		}
 	}
