@@ -30,12 +30,12 @@ public void processFile(String filename) {
 public void processEvent(DataEvent event) {
 	if(!event.hasBank("REC::Particle")) return
 	float startTime = event.getBank("REC::Event").getFloat("startTime",0);
-	DataBank particleBank = event.getBank("REC::Particle");
+	DataBank reconstructedParticle = event.getBank("REC::Particle");
 
 	p_ind=-1
-	if (!hasProton(particleBank)) return
+	if (!hasProton(reconstructedParticle)) return
 	if (p_ind>-1){
-		(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeProton(particleBank,p_ind)
+		(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p_ind)
 
 		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc)
 	}
@@ -56,6 +56,7 @@ public boolean hasProton(DataBank reconstructedParticle){
 
 public boolean isProton(DataBank reconstructedParticle, int p){
 	//if (pID_default_ID_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
+	//if (pID_beta_momentum_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
 	if (pID_charge_cut(reconstructedParticle,p)){
 		p_ind=p //This gives us the index of the row that has the particle event
 		return true
@@ -70,6 +71,13 @@ public boolean pID_default_ID_cut(DataBank reconstructedParticle, int p){
 
 //Remove the above cut with gaussian on above
 
+public boolean pID_beta_momentum_cut(DataBank reconstructedParticle, int p){
+	(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p)
+	if((beta_recon>1.1*beta_calc) || (beta_recon<0.9*beta_calc)) return true;
+  else return false;
+
+}
+
 public boolean pID_charge_cut(DataBank reconstructedParticle, int p){
   if(reconstructedParticle.getInt("charge",p)==1) return true;
   else return false;
@@ -77,7 +85,7 @@ public boolean pID_charge_cut(DataBank reconstructedParticle, int p){
 
 //LorentzVector Ve = new LorentzVector()
 
-def makeProton(DataBank reconstructedParticle,int p_ind){
+def makeParticle(DataBank reconstructedParticle,int p_ind){
 		//println("p_ind p_ind is: "+p_ind)
 		float px = reconstructedParticle.getFloat("px",p_ind)
 		float py = reconstructedParticle.getFloat("py",p_ind)
