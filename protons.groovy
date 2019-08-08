@@ -42,8 +42,8 @@ public void processEvent(DataEvent event) {
 		println("Detector is: "+recon_Scint.getInt("detector",p_ind))
 		println("Layer is: "+recon_Scint.getInt("layer",p_ind))
 		println("Sector is: "+recon_Scint.getInt("sector",p_ind))
-		println("Time is: "+recon_Scint.getInt("time",p_ind))
-		println("Path is: "+recon_Scint.getInt("path",p_ind))
+		println("Time is: "+recon_Scint.getFloat("time",p_ind))
+		println("Path is: "+recon_Scint.getFloat("path",p_ind))
 
 		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc)
 	}
