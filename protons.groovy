@@ -47,9 +47,11 @@ public void processEvent(DataEvent event) {
 			println("Time is: "+recon_Scint.getFloat("time",p_ind))
 			float p_path = recon_Scint.getFloat("path",p_ind)
 			println("Path is: "+recon_Scint.getFloat("path",p_ind))
+			//Question 88 here:
+			fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
 		}
 
-		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
+
 	}
 	else return;
 }
