@@ -38,14 +38,18 @@ public void processEvent(DataEvent event) {
 		(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p_ind)
 
 		DataBank recon_Scint = event.getBank("REC::Scintillator");
-		println("Index is: "+recon_Scint.getInt("index",p_ind))
-		println("Detector is: "+recon_Scint.getInt("detector",p_ind))
-		println("Layer is: "+recon_Scint.getInt("layer",p_ind))
-		println("Sector is: "+recon_Scint.getInt("sector",p_ind))
-		println("Time is: "+recon_Scint.getFloat("time",p_ind))
-		println("Path is: "+recon_Scint.getFloat("path",p_ind))
+		//println("Index is: "+recon_Scint.getInt("index",p_ind))
+		//println("Detector is: "+recon_Scint.getInt("detector",p_ind))
+		if(recon_Scint.getInt("detector",p_ind)==12){
+			println("Layer is: "+recon_Scint.getInt("layer",p_ind))
+			println("Sector is: "+recon_Scint.getInt("sector",p_ind))
+			float p_time = recon_Scint.getFloat("time",p_ind)
+			println("Time is: "+recon_Scint.getFloat("time",p_ind))
+			float p_path = recon_Scint.getFloat("path",p_ind)
+			println("Path is: "+recon_Scint.getFloat("path",p_ind))
+		}
 
-		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc)
+		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
 	}
 	else return;
 }
@@ -118,7 +122,7 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc]
 }
 
-public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc){
+public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect){
 	H_proton_beta_momentum[p_sect-1].fill(p_momentum,beta_recon)
 	H_proton_mom[p_sect-1].fill(p_momentum);
 	H_beta_recon_beta_calc[p_sect-1].fill(beta_recon-beta_calc);
@@ -126,6 +130,12 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc){
 	H_proton_theta_mom[p_sect-1].fill(p_momentum,p_theta)
 	H_proton_phi_mom[p_sect-1].fill(p_momentum,p_phi)
 	H_proton_theta_phi[p_sect-1].fill(p_phi,p_theta);
+
+	H_proton_time[p_sect-1].fill(p_time);
+	H_proton_path[p_sect-1].fill(p_path);
+	H_proton_sect.fill(p_sect);
+
+
 }
 
 """------------------------ Variable Definitions -------------------------"""
@@ -150,6 +160,18 @@ H_beta_recon_beta_calc =(0..5).collect{
 
 H_proton_mom =(0..5).collect{
 	def h1 = new H1F("H_proton_mom_S"+(it+1), "H_proton_mom_S"+(it+1),100, 0, EB);
+	return h1}
+
+H_proton_time =(0..5).collect{
+	def h1 = new H1F("H_proton_time_S"+(it+1), "H_proton_time_S"+(it+1),100, 0, 1000);
+	return h1}
+
+H_proton_path =(0..5).collect{
+	def h1 = new H1F("H_proton_path_S"+(it+1), "H_proton_path_S"+(it+1),100, 0, 1000);
+	return h1}
+
+H_proton_sect ={
+	def h1 = new H1F("H_proton_sect", "H_proton_sect",100, 0, 7);
 	return h1}
 
 H_proton_vz_mom =(0..<6).collect{
@@ -185,6 +207,10 @@ for (arg in args){
 	out.addDataSet(H_proton_theta_mom[it])
 	out.addDataSet(H_proton_phi_mom[it])
 	out.addDataSet(H_proton_theta_phi[it])
+	out.addDataSet(H_proton_time[it])
+	out.addDataSet(H_proton_path[it])
 }
+
+out.addDataSet(H_proton_sect)
 
 out.writeFile('proton_pID_new'+run+'.hipo')
