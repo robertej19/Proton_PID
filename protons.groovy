@@ -48,7 +48,7 @@ public void processEvent(DataEvent event) {
 			p_layer = recon_Scint.getInt("layer",p_ind)
 			p_sect = recon_Scint.getInt("sector",p_ind)
 			if (![1, 2, 3, 4, 5, 6].contains(p_sect)){
-				println("DANGER NULL SECTOR")
+				println("DANGER INVALID SECTOR")
 				println(p_sect) }
 			p_time = recon_Scint.getFloat("time",p_ind)
 			p_path = recon_Scint.getFloat("path",p_ind)
@@ -158,7 +158,7 @@ out.mkdir('/'+run)
 out.cd('/'+run)
 
 H_proton_beta_momentum =(0..<6).collect{
-	def h1 = new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),300,0,EB,100,0,1);
+	def h1 = new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1);
 	return h1}
 
 H_beta_recon_beta_calc =(0..5).collect{
@@ -169,12 +169,12 @@ H_proton_mom =(0..5).collect{
 	def h1 = new H1F("H_proton_mom_S"+(it+1), "H_proton_mom_S"+(it+1),100, 0, EB);
 	return h1}
 
-H_proton_time =(0..5).collect{
-	def h1 = new H1F("H_proton_time_S"+(it+1), "H_proton_time_S"+(it+1),100, 0, 1000);
+H_proton_time =(0..<6).collect{
+	def h1 = new H1F("H_proton_time_S"+(it+1), "H_proton_time_S"+(it+1),100, 0, 250);
 	return h1}
 
 H_proton_path =(0..5).collect{
-	def h1 = new H1F("H_proton_path_S"+(it+1), "H_proton_path_S"+(it+1),100, 0, 1000);
+	def h1 = new H1F("H_proton_path_S"+(it+1), "H_proton_path_S"+(it+1),100, 400, 1000);
 	return h1}
 
 //H_proton_sect ={
