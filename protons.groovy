@@ -88,8 +88,8 @@ public boolean hasProton(DataBank reconstructedParticle){
 
 public boolean isProton(DataBank reconstructedParticle, int p){
 	//if (pID_default_ID_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
-	if (pID_beta_momentum_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
-	//if (pID_charge_cut(reconstructedParticle,p)){
+	//if (pID_beta_momentum_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
+	if (pID_charge_cut(reconstructedParticle,p)){
 		p_ind=p //This gives us the index of the row that has the particle event
 		return true
 	}
