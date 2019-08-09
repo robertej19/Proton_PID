@@ -56,7 +56,7 @@ public void processEvent(DataEvent event) {
 			//fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path)
 		}
 		else{
-			println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
+			//println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
 		}
 
 		fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer)
