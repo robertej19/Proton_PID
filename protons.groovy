@@ -47,6 +47,9 @@ public void processEvent(DataEvent event) {
 		if(recon_Scint.getInt("detector",p_ind)==12){
 			p_layer = recon_Scint.getInt("layer",p_ind)
 			p_sect = recon_Scint.getInt("sector",p_ind)
+			if (![1, 2, 3, 4, 5, 6].contains(p_sect)){
+				println("DANGER NULL SECTOR")
+				println(p_sect) }
 			p_time = recon_Scint.getFloat("time",p_ind)
 			p_path = recon_Scint.getFloat("path",p_ind)
 			//Question 88 here:
