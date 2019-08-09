@@ -103,7 +103,13 @@ public boolean pID_default_ID_cut(DataBank reconstructedParticle, int p){
 
 public boolean pID_beta_momentum_cut(DataBank reconstructedParticle, int p){
 	(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p)
-	if((beta_recon<1.05*beta_calc) && (beta_recon>0.95*beta_calc)) return true;
+
+	if((beta_recon<1.05*beta_calc) && (beta_recon>0.95*beta_calc)){
+		 println("Momentum value is: "+p_momentum)
+		 println("Beta Recon value is: "+beta_recon)
+		 println("Beta Calc value is: "+beta_calc)
+		 return true
+	 }
   else return false;
 
 }
@@ -117,7 +123,7 @@ public boolean pID_charge_cut(DataBank reconstructedParticle, int p){
 
 def makeParticle(DataBank reconstructedParticle,int p_ind){
 		//println("p_ind p_ind is: "+p_ind)
-		"REC::Scintillator"
+		//"REC::Scintillator"
 		float px = reconstructedParticle.getFloat("px",p_ind)
 		float py = reconstructedParticle.getFloat("py",p_ind)
 		float pz = reconstructedParticle.getFloat("pz",p_ind)
