@@ -35,7 +35,7 @@ public void processEvent(DataEvent event) {
 	p_ind=-1
 	if (!hasProton(reconstructedParticle)) return
 	if (p_ind>-1){
-		(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p_ind)
+		(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc,beta_upper,beta_lower) = makeParticle(reconstructedParticle,p_ind)
 
 		DataBank recon_Scint = event.getBank("REC::Scintillator");
 		float p_time = 0
@@ -62,7 +62,7 @@ public void processEvent(DataEvent event) {
 			//println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
 		}
 
-		if (p_momentum < 5){
+		if (p_momentum < 50){
 			if ([1, 2, 3, 4, 5, 6].contains(p_sect)){
 				if ([1, 2, 3].contains(p_layer)){
 					fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer)
@@ -102,9 +102,9 @@ public boolean pID_default_ID_cut(DataBank reconstructedParticle, int p){
 }
 
 public boolean pID_beta_momentum_cut(DataBank reconstructedParticle, int p){
-	(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p)
+	(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc,beta_upper,beta_lower) = makeParticle(reconstructedParticle,p)
 
-	if((beta_recon<1.02*beta_calc) && (beta_recon>0.94*beta_calc)){
+	if((beta_recon<beta_upper) && (beta_recon>beta_lower)){
 		 //println("Momentum value is: "+p_momentum)
 		 //println("Beta Recon value is: "+beta_recon)
 		 //println("Beta Calc value is: "+beta_calc)
@@ -134,8 +134,15 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 		float p_phi = (float) Math.toDegrees(Ve.phi())
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
+
+		float scale_factor = 0.05
 		float beta_calc = (float)Math.sqrt(p_momentum*p_momentum/(p_momentum*p_momentum+p_mass*p_mass))
-		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc]
+		float p_mom_up = p_momentum*(1+scale_factor)
+		float p_mom_low = p_momentum*(1-scale_factor)
+		float beta_upper = (float)Math.sqrt(p_mom_up*p_mom_up/(p_mom_up*p_mom_up+p_mass*p_mass))
+		float beta_lower = (float)Math.sqrt(p_mom_low*p_mom_low/(p_mom_low*p_mom_low+p_mass*p_mass))
+
+		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc,beta_upper,beta_lower]
 }
 
 public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer){
