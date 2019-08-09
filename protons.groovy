@@ -63,7 +63,9 @@ public void processEvent(DataEvent event) {
 		}
 
 		if ([1, 2, 3, 4, 5, 6].contains(p_sect)){
-			fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer)
+			if ([1, 2, 3].contains(p_layer)){
+				fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer)
+			}
 		}
 
 	}
@@ -133,16 +135,17 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 }
 
 public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer){
-	H_proton_beta_momentum[p_sect-1].fill(p_momentum,beta_recon)
-	H_proton_mom[p_sect-1].fill(p_momentum);
-	H_beta_recon_beta_calc[p_sect-1].fill(beta_recon-beta_calc);
-	H_proton_vz_mom[p_sect-1].fill(p_momentum,p_vz);
-	H_proton_theta_mom[p_sect-1].fill(p_momentum,p_theta)
-	H_proton_phi_mom[p_sect-1].fill(p_momentum,p_phi)
-	H_proton_theta_phi[p_sect-1].fill(p_phi,p_theta);
+	int hist_layer = 6*(p_layer-1)+p_sect-1
+	H_proton_beta_momentum[hist_layer].fill(p_momentum,beta_recon)
+	H_proton_mom[hist_layer].fill(p_momentum);
+	H_beta_recon_beta_calc[hist_layer].fill(beta_recon-beta_calc);
+	H_proton_vz_mom[hist_layer].fill(p_momentum,p_vz);
+	H_proton_theta_mom[hist_layer].fill(p_momentum,p_theta)
+	H_proton_phi_mom[hist_layer].fill(p_momentum,p_phi)
+	H_proton_theta_phi[hist_layer].fill(p_phi,p_theta);
 
-	H_proton_time[p_sect-1].fill(p_time);
-	H_proton_path[p_sect-1].fill(p_path);
+	H_proton_time[hist_layer].fill(p_time);
+	H_proton_path[hist_layer].fill(p_path);
 	//H_proton_sect.fill(p_sect);
 
 
@@ -160,23 +163,25 @@ TDirectory out = new TDirectory()
 out.mkdir('/'+run)
 out.cd('/'+run)
 
-H_proton_beta_momentum =(0..<6).collect{
+int max_hists = 18
+
+H_proton_beta_momentum =(0..<max_hists).collect{
 	def h1 = new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1);
 	return h1}
 
-H_beta_recon_beta_calc =(0..<6).collect{
+H_beta_recon_beta_calc =(0..<max_hists).collect{
 	def h1 = new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1);
 	return h1}
 
-H_proton_mom =(0..<6).collect{
+H_proton_mom =(0..<max_hists).collect{
 	def h1 = new H1F("H_proton_mom_S"+(it+1), "H_proton_mom_S"+(it+1),100, 0, EB);
 	return h1}
 
-H_proton_time =(0..<6).collect{
+H_proton_time =(0..<max_hists).collect{
 	def h1 = new H1F("H_proton_time_S"+(it+1), "H_proton_time_S"+(it+1),100, 0, 250);
 	return h1}
 
-H_proton_path =(0..<6).collect{
+H_proton_path =(0..<max_hists).collect{
 	def h1 = new H1F("H_proton_path_S"+(it+1), "H_proton_path_S"+(it+1),100, 400, 1000);
 	return h1}
 
@@ -184,19 +189,19 @@ H_proton_path =(0..<6).collect{
 //	def h1 = new H1F("H_proton_sect", "H_proton_sect",100, 0, 7);
 //	return h1}
 
-H_proton_vz_mom =(0..<6).collect{
+H_proton_vz_mom =(0..<max_hists).collect{
 	def h1 = new H2F("H_proton_vz_mom_S"+(it+1), "H_proton_vz_mom_S"+(it+1),100,0,EB,100,-25,25);
 	return h1}
 
-H_proton_theta_mom =(0..<6).collect{
+H_proton_theta_mom =(0..<max_hists).collect{
 	def h1 = new H2F("H_proton_theta_mom_S"+(it+1), "H_proton_theta_mom_S"+(it+1),100,0,EB,100,0,40);
 	return h1}
 
-H_proton_phi_mom = (0..<6).collect{
+H_proton_phi_mom = (0..<max_hists).collect{
 	def h1 = new H2F("H_proton_phi_mom_S"+(it+1), "H_proton_phi_mom_S"+(it+1),100,0,EB,100,-180,180);
 	return h1}
 
-H_proton_theta_phi =(0..<6).collect{
+H_proton_theta_phi =(0..<max_hists).collect{
 	def h1 = new H2F("H_proton_theta_phi_S"+(it+1), "H_proton_theta_phi_S"+(it+1),100,-180,180,100,0,40);
 	return h1}
 
@@ -209,7 +214,7 @@ for (arg in args){
 	processFile(arg)
 }
 
-(0..<6).each{
+(0..<max_hists).each{
 	out.addDataSet(H_proton_beta_momentum[it])
 	out.addDataSet(H_proton_mom[it])
 	out.addDataSet(H_beta_recon_beta_calc[it])
