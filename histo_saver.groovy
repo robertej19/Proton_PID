@@ -12,6 +12,7 @@ for(arg in args) {
   dir.readFile(arg)
   println("Printing directory")
   dir.pwd()
+  dir.getDirectoryList()
   println(dir.pwd())
   dir.ls()
   def h1 = dir.getObject(String.format('/5038/H_proton_beta_momentum_S3'))
