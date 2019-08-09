@@ -62,7 +62,7 @@ public void processEvent(DataEvent event) {
 			//println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
 		}
 
-		if p_momentum < 5{
+		if (p_momentum < 5){
 			if ([1, 2, 3, 4, 5, 6].contains(p_sect)){
 				if ([1, 2, 3].contains(p_layer)){
 					fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer)
