@@ -102,7 +102,7 @@ public boolean pID_default_ID_cut(DataBank reconstructedParticle, int p){
 public boolean pID_beta_momentum_cut(DataBank reconstructedParticle, int p){
 	(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p)
 
-	if((beta_recon<1.1*beta_calc) && (beta_recon>0.9*beta_calc)){
+	if((beta_recon<1.02*beta_calc) && (beta_recon>0.94*beta_calc)){
 		 //println("Momentum value is: "+p_momentum)
 		 //println("Beta Recon value is: "+beta_recon)
 		 //println("Beta Calc value is: "+beta_calc)
