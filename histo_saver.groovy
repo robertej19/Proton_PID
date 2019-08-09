@@ -10,6 +10,7 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 for(arg in args) {
   TDirectory dir = new TDirectory()
   dir.readFile(arg)
+  println("Printing directory")
   dir.pwd()
   println(dir.pwd())
   dir.ls()
