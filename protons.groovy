@@ -99,8 +99,6 @@ public boolean pID_default_ID_cut(DataBank reconstructedParticle, int p){
   else return false;
 }
 
-//Remove the above cut with gaussian on above
-
 public boolean pID_beta_momentum_cut(DataBank reconstructedParticle, int p){
 	(p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc) = makeParticle(reconstructedParticle,p)
 
@@ -118,8 +116,6 @@ public boolean pID_charge_cut(DataBank reconstructedParticle, int p){
   if(reconstructedParticle.getInt("charge",p)==1) return true;
   else return false;
 }
-
-//LorentzVector Ve = new LorentzVector()
 
 def makeParticle(DataBank reconstructedParticle,int p_ind){
 		//println("p_ind p_ind is: "+p_ind)
@@ -153,7 +149,6 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 	H_proton_time[hist_layer].fill(p_time);
 	H_proton_path[hist_layer].fill(p_path);
 	//H_proton_sect.fill(p_sect);
-
 
 }
 
