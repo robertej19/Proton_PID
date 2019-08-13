@@ -175,45 +175,27 @@ out.cd('/'+run)
 
 int max_hists = 18
 
-H_proton_beta_momentum =(0..<max_hists).collect{
-	def h1 = new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1);
-	return h1}
+H_proton_beta_momentum =(0..<max_hists).collect{new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1)}
 
-H_beta_recon_beta_calc =(0..<max_hists).collect{
-	def h1 = new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1);
-	return h1}
+H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
 
-H_proton_mom =(0..<max_hists).collect{
-	def h1 = new H1F("H_proton_mom_S"+(it+1), "H_proton_mom_S"+(it+1),100, 0, EB);
-	return h1}
+H_proton_mom =(0..<max_hists).collect{new H1F("H_proton_mom_S"+(it+1), "H_proton_mom_S"+(it+1),100, 0, EB)}
 
-H_proton_time =(0..<max_hists).collect{
-	def h1 = new H1F("H_proton_time_S"+(it+1), "H_proton_time_S"+(it+1),100, 0, 250);
-	return h1}
+H_proton_time =(0..<max_hists).collect{new H1F("H_proton_time_S"+(it+1), "H_proton_time_S"+(it+1),100, 0, 250)}
 
-H_proton_path =(0..<max_hists).collect{
-	def h1 = new H1F("H_proton_path_S"+(it+1), "H_proton_path_S"+(it+1),100, 400, 1000);
-	return h1}
+H_proton_path =(0..<max_hists).collect{new H1F("H_proton_path_S"+(it+1), "H_proton_path_S"+(it+1),100, 400, 1000)}
 
-//H_proton_sect ={
-//	def h1 = new H1F("H_proton_sect", "H_proton_sect",100, 0, 7);
-//	return h1}
+//H_proton_sect ={new H1F("H_proton_sect", "H_proton_sect",100, 0, 7)}
 
-H_proton_vz_mom =(0..<max_hists).collect{
-	def h1 = new H2F("H_proton_vz_mom_S"+(it+1), "H_proton_vz_mom_S"+(it+1),100,0,EB,100,-25,25);
-	return h1}
+H_elec_vz =(0..<6).collect{new H1F("H_elec_vz_S"+(it+1), "H_elec_vz_S"+(it+1),100,-25,25)}
 
-H_proton_theta_mom =(0..<max_hists).collect{
-	def h1 = new H2F("H_proton_theta_mom_S"+(it+1), "H_proton_theta_mom_S"+(it+1),100,0,EB,100,0,40);
-	return h1}
+H_proton_vz_mom =(0..<max_hists).collect{new H2F("H_proton_vz_mom_S"+(it+1), "H_proton_vz_mom_S"+(it+1),100,0,EB,100,-25,25)}
 
-H_proton_phi_mom = (0..<max_hists).collect{
-	def h1 = new H2F("H_proton_phi_mom_S"+(it+1), "H_proton_phi_mom_S"+(it+1),100,0,EB,100,-180,180);
-	return h1}
+H_proton_theta_mom =(0..<max_hists).collect{new H2F("H_proton_theta_mom_S"+(it+1), "H_proton_theta_mom_S"+(it+1),100,0,EB,100,0,40)}
 
-H_proton_theta_phi =(0..<max_hists).collect{
-	def h1 = new H2F("H_proton_theta_phi_S"+(it+1), "H_proton_theta_phi_S"+(it+1),100,-180,180,100,0,40);
-	return h1}
+H_proton_phi_mom = (0..<max_hists).collect{new H2F("H_proton_phi_mom_S"+(it+1), "H_proton_phi_mom_S"+(it+1),100,0,EB,100,-180,180)}
+
+H_proton_theta_phi =(0..<max_hists).collect{new H2F("H_proton_theta_phi_S"+(it+1), "H_proton_theta_phi_S"+(it+1),100,-180,180,100,0,40)}
 
 """------------------------ Start of Program -------------------------"""
 
