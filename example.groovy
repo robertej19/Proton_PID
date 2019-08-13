@@ -149,6 +149,7 @@ H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_
 filenum=-1 //There should be able to get rid of this filenum issue
 for (arg in args){
 	filenum=filenum+1
+	println "POPULATING $filenum"
 	if (filenum==0) continue
 	processFile(arg,Hist_brbc)
 }
