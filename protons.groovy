@@ -169,8 +169,8 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 
 """------------------------ Variable Definitions -------------------------"""
 
-int run = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
-println "args0 is $run"
+int runsss = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
+println "args0 is $runsss"
 def run = args[0].toInteger()
 float EB = 10.6f
 if(run>6607) EB=10.2f
