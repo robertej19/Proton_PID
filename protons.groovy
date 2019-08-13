@@ -163,7 +163,8 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 	//for(int isec=1;isec<=6;isec++)
 	//for(int ilay=1;ilay<=3;ilay++)
 	println "Trying to fill histogram"
-	Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc);
+	//Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc);
+	Hist_brbc["sec2_layer2"].fill(1);
 
 
 }
