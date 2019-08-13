@@ -193,10 +193,11 @@ for(int isec=1;isec<=6;isec++){
  }
 }
 
+println hist_brbc[sec2_layer2]
 
 
 
-h_proton_beta_momentum =(0..<max_hists).collect{new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1)}
+H_proton_beta_momentum =(0..<max_hists).collect{new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1)}
 
 H_proton_DeltaBeta_momentum =(0..<max_hists).collect{new H2F("H_proton_DeltaBeta_momentum_S"+(it+1), "H_proton_DeltaBeta_momentum_S"+(it+1),800,0,EB,100,-1,1)}
 
