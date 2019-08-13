@@ -163,7 +163,7 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 	//for(int isec=1;isec<=6;isec++)
 	//for(int ilay=1;ilay<=3;ilay++)
 	println "Trying to fill histogram"
-	hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc);
+	Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc);
 
 
 }
@@ -183,17 +183,17 @@ out.cd('/'+run)
 
 int max_hists = 18
 
-def hist_brbc = [:].withDefault{new H1F("hist_${it}", "title for ${it}",100,-1,1)}
+def Hist_brbc = [:].withDefault{new H1F("hist_${it}", "title for ${it}",100,-1,1)}
 
 //H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
 for(int isec=1;isec<=6;isec++){
  for(int ilay=1;ilay<=3;ilay++){
  	 println "trying to populate"
-   hist_brbc["sec${isec}_layer${ilay}"].fill(0)
+   Hist_brbc["sec${isec}_layer${ilay}"].fill(0)
  }
 }
 
-println hist_brbc["sec2_layer2"]
+println Hist_brbc["sec2_layer2"]
 
 
 
