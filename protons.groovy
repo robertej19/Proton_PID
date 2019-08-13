@@ -146,7 +146,8 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 }
 
 public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer,Hist_brbc){
-	int hist_layer = 6*(p_layer-1)+p_sect-1
+	//int hist_layer = 6*(p_layer-1)+p_sect-1
+	int hist_layer = p_sect-1
 	H_proton_beta_momentum[hist_layer].fill(p_momentum,beta_recon)
 	H_proton_DeltaBeta_momentum[hist_layer].fill(p_momentum,beta_recon-beta_calc)
 	H_proton_mom[hist_layer].fill(p_momentum);
@@ -182,7 +183,7 @@ TDirectory out = new TDirectory()
 out.mkdir('/'+run)
 out.cd('/'+run)
 
-int max_hists = 18
+int max_hists = 6
 
 def Hist_brbc = [:].withDefault{new H1F("hist_${it}", "title for ${it}",100,-1,1)}
 
