@@ -150,7 +150,7 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 	H_proton_beta_momentum[hist_layer].fill(p_momentum,beta_recon)
 	H_proton_DeltaBeta_momentum[hist_layer].fill(p_momentum,beta_recon-beta_calc)
 	H_proton_mom[hist_layer].fill(p_momentum);
-	H_beta_recon_beta_calc[hist_layer].fill(beta_recon-beta_calc);
+	//H_beta_recon_beta_calc[hist_layer].fill(beta_recon-beta_calc);
 	H_proton_vz_mom[hist_layer].fill(p_momentum,p_vz);
 	H_proton_theta_mom[hist_layer].fill(p_momentum,p_theta)
 	H_proton_phi_mom[hist_layer].fill(p_momentum,p_phi)
@@ -160,10 +160,17 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 	H_proton_path[hist_layer].fill(p_path);
 	//H_proton_sect.fill(p_sect);
 
+	//for(int isec=1;isec<=6;isec++)
+	//for(int ilay=1;ilay<=3;ilay++)
+	hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc)
+
+
 }
 
 """------------------------ Variable Definitions -------------------------"""
 
+int run = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
+println "args0 is $run"
 def run = args[0].toInteger()
 float EB = 10.6f
 if(run>6607) EB=10.2f
@@ -176,11 +183,15 @@ out.cd('/'+run)
 
 int max_hists = 18
 
+def hist_brbc = [:].withDefault{new H1F("hist_${it}", "title for ${it}",100,-1,1)}
+
+//H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
+
+
+
 H_proton_beta_momentum =(0..<max_hists).collect{new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1)}
 
 H_proton_DeltaBeta_momentum =(0..<max_hists).collect{new H2F("H_proton_DeltaBeta_momentum_S"+(it+1), "H_proton_DeltaBeta_momentum_S"+(it+1),800,0,EB,100,-1,1)}
-
-H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
 
 H_proton_mom =(0..<max_hists).collect{new H1F("H_proton_mom_S"+(it+1), "H_proton_mom_S"+(it+1),100, 0, EB)}
 
@@ -213,7 +224,7 @@ for (arg in args){
 	out.addDataSet(H_proton_beta_momentum[it])
 	out.addDataSet(H_proton_DeltaBeta_momentum[it])
 	out.addDataSet(H_proton_mom[it])
-	out.addDataSet(H_beta_recon_beta_calc[it])
+	//out.addDataSet(H_beta_recon_beta_calc[it])
 	out.addDataSet(H_proton_vz_mom[it])
 	out.addDataSet(H_proton_theta_mom[it])
 	out.addDataSet(H_proton_phi_mom[it])
@@ -221,6 +232,7 @@ for (arg in args){
 	out.addDataSet(H_proton_time[it])
 	out.addDataSet(H_proton_path[it])
 }
+out.addDataSet(hist_brbc)
 
 //out.addDataSet(H_proton_sect)
 
