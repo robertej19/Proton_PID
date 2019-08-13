@@ -11,11 +11,15 @@ while(reader.hasEvent()) {
   def event = reader.getNextEvent()
   if (event.hasBank("REC::Particle") && event.hasBank("REC::Calorimeter")) {
     def evc = event.getBank("REC::Calorimeter")
+
+    def calls = [evc.getShort('pindex')*.toInteger(), evc.getByte('sector')]
+      println calls
+
     def secs = [evc.getShort('pindex')*.toInteger(), evc.getByte('sector')].transpose().collectEntries()
 
     def evp = event.getBank("REC::Particle")
     evp.getInt("pid").eachWithIndex{pid, ind ->
-      println pid+': '+secs[ind]
+      //println pid+': '+secs[ind]
     }
   }
 }
