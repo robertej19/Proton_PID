@@ -88,8 +88,8 @@ public boolean hasProton(DataBank reconstructedParticle){
 
 public boolean isProton(DataBank reconstructedParticle, int p){
 	//if (pID_default_ID_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
-	//if (pID_beta_momentum_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
-	if (pID_charge_cut(reconstructedParticle,p)){
+	if (pID_beta_momentum_cut(reconstructedParticle,p)&& pID_charge_cut(reconstructedParticle,p)){
+	//if (pID_charge_cut(reconstructedParticle,p)){
 		p_ind=p //This gives us the index of the row that has the particle event
 		return true
 	}
@@ -135,7 +135,7 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
 
-		float scale_factor = 0.05
+		float scale_factor = 0.30
 		float beta_calc = (float)Math.sqrt(p_momentum*p_momentum/(p_momentum*p_momentum+p_mass*p_mass))
 		float p_mom_up = p_momentum*(1+scale_factor)
 		float p_mom_low = p_momentum*(1-scale_factor)
@@ -190,7 +190,7 @@ H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_
 
 H_proton_beta_momentum =(0..<max_hists).collect{new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1)}
 
-H_proton_DeltaBeta_momentum =(0..<max_hists).collect{new H2F("H_proton_DeltaBeta_momentum_S"+(it+1), "H_proton_DeltaBeta_momentum_S"+(it+1),800,0,EB,100,-1,1)}
+H_proton_DeltaBeta_momentum =(0..<max_hists).collect{new H2F("H_proton_DeltaBeta_momentum_S"+(it+1), "H_proton_DeltaBeta_momentum_S"+(it+1),800,0,EB,100,-.2,.2)}
 
 H_proton_mom =(0..<max_hists).collect{new H1F("H_proton_mom_S"+(it+1), "H_proton_mom_S"+(it+1),100, 0, EB)}
 
