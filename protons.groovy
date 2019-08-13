@@ -193,7 +193,7 @@ for(int isec=1;isec<=6;isec++){
  }
 }
 
-println hist_brbc[sec2_layer2]
+println hist_brbc["sec2_layer2"]
 
 
 
