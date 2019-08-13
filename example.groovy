@@ -55,6 +55,7 @@ public void processEvent(DataEvent event,Hist_brbc) {
 			if ([1, 2, 3, 4, 5, 6].contains(p_sect)){
 				if ([1, 2, 3].contains(p_layer)){
 					fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer,Hist_brbc)
+					println "POPULATING"
 				}
 			}
 		}
