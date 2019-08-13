@@ -241,7 +241,14 @@ for (arg in args){
 	out.addDataSet(H_proton_time[it])
 	out.addDataSet(H_proton_path[it])
 }
-out.addDataSet(Hist_brbc)
+
+for(int isec=1;isec<=6;isec++){
+ for(int ilay=1;ilay<=3;ilay++){
+ 	 println "trying to populate"
+   out.addDataSet(Hist_brbc["sec${isec}_layer${ilay}"])
+ }
+}
+
 
 //out.addDataSet(H_proton_sect)
 
