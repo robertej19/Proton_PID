@@ -194,7 +194,7 @@ for(int isec=1;isec<=6;isec++){
  }
 }
 
-println Hist_brbc["sec2_layer2"]
+println Hist_brbc
 
 
 
