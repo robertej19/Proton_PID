@@ -169,9 +169,8 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 
 """------------------------ Variable Definitions -------------------------"""
 
-int runsss = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
-println "args0 is $runsss"
-def run = args[0].toInteger()
+int run = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
+
 float EB = 10.6f
 if(run>6607) EB=10.2f
 
@@ -186,6 +185,9 @@ int max_hists = 18
 def hist_brbc = [:].withDefault{new H1F("hist_${it}", "title for ${it}",100,-1,1)}
 
 //H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
+for(int isec=1;isec<=6;isec++)
+ for(int ilay=1;ilay<=3;ilay++)
+   hist_brbc["sec${isec}_layer${ilay}"].fill()
 
 
 
