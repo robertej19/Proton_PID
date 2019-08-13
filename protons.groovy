@@ -17,17 +17,17 @@ import org.jlab.groot.graphics.EmbeddedCanvas;
 
 """------------------------ Function Definitions -------------------------"""
 
-public void processFile(String filename) {
+public void processFile(String filename,Hist_brbc) {
 	HipoDataSource reader = new HipoDataSource()
 	reader.open(filename)
 
 	while( reader.hasEvent()){
 		DataEvent event = reader.getNextEvent();
-		processEvent(event)
+		processEvent(event,Hist_brbc)
 	}
 }
 
-public void processEvent(DataEvent event) {
+public void processEvent(DataEvent event,Hist_brbc) {
 	if(!event.hasBank("REC::Particle")) return
 	float startTime = event.getBank("REC::Event").getFloat("startTime",0);
 	DataBank reconstructedParticle = event.getBank("REC::Particle");
@@ -65,7 +65,7 @@ public void processEvent(DataEvent event) {
 		if (p_momentum < 50){
 			if ([1, 2, 3, 4, 5, 6].contains(p_sect)){
 				if ([1, 2, 3].contains(p_layer)){
-					fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer)
+					fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer,Hist_brbc)
 				}
 			}
 		}
@@ -145,7 +145,7 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc,beta_upper,beta_lower]
 }
 
-public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer){
+public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer,Hist_brbc){
 	int hist_layer = 6*(p_layer-1)+p_sect-1
 	H_proton_beta_momentum[hist_layer].fill(p_momentum,beta_recon)
 	H_proton_DeltaBeta_momentum[hist_layer].fill(p_momentum,beta_recon-beta_calc)
@@ -226,7 +226,7 @@ filenum=-1 //There should be able to get rid of this filenum issue
 for (arg in args){
 	filenum=filenum+1
 	if (filenum==0) continue
-	processFile(arg)
+	processFile(arg,Hist_brbc)
 }
 
 (0..<max_hists).each{
