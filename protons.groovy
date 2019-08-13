@@ -150,7 +150,7 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 	H_proton_beta_momentum[hist_layer].fill(p_momentum,beta_recon)
 	H_proton_DeltaBeta_momentum[hist_layer].fill(p_momentum,beta_recon-beta_calc)
 	H_proton_mom[hist_layer].fill(p_momentum);
-	//H_beta_recon_beta_calc[hist_layer].fill(beta_recon-beta_calc);
+	H_beta_recon_beta_calc[hist_layer].fill(beta_recon-beta_calc);
 	H_proton_vz_mom[hist_layer].fill(p_momentum,p_vz);
 	H_proton_theta_mom[hist_layer].fill(p_momentum,p_theta)
 	H_proton_phi_mom[hist_layer].fill(p_momentum,p_phi)
@@ -186,15 +186,15 @@ int max_hists = 18
 
 def Hist_brbc = [:].withDefault{new H1F("hist_${it}", "title for ${it}",100,-1,1)}
 
-//H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
-for(int isec=1;isec<=6;isec++){
- for(int ilay=1;ilay<=3;ilay++){
- 	 println "trying to populate"
-   Hist_brbc["sec${isec}_layer${ilay}"].fill(0)
- }
-}
+H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
+//for(int isec=1;isec<=6;isec++){
+// for(int ilay=1;ilay<=3;ilay++){
+// 	 //println "trying to populate"/
+//   Hist_brbc["sec${isec}_layer${ilay}"].fill(0)
+// }/
+//}
 
-println Hist_brbc
+//println Hist_brbc
 
 
 
@@ -233,7 +233,7 @@ for (arg in args){
 	out.addDataSet(H_proton_beta_momentum[it])
 	out.addDataSet(H_proton_DeltaBeta_momentum[it])
 	out.addDataSet(H_proton_mom[it])
-	//out.addDataSet(H_beta_recon_beta_calc[it])
+	out.addDataSet(H_beta_recon_beta_calc[it])
 	out.addDataSet(H_proton_vz_mom[it])
 	out.addDataSet(H_proton_theta_mom[it])
 	out.addDataSet(H_proton_phi_mom[it])
@@ -244,7 +244,7 @@ for (arg in args){
 
 for(int isec=1;isec<=6;isec++){
  for(int ilay=1;ilay<=3;ilay++){
- 	 println "trying to populate"
+ 	 //println "trying to populate"
    out.addDataSet(Hist_brbc["sec${isec}_layer${ilay}"])
  }
 }
