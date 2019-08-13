@@ -55,7 +55,6 @@ public void processEvent(DataEvent event,Hist_brbc) {
 			if ([1, 2, 3, 4, 5, 6].contains(p_sect)){
 				if ([1, 2, 3].contains(p_layer)){
 					fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer,Hist_brbc)
-					println "POPULATING"
 				}
 			}
 		}
@@ -149,7 +148,6 @@ H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_
 filenum=-1 //There should be able to get rid of this filenum issue
 for (arg in args){
 	filenum=filenum+1
-	println "POPULATING $filenum"
 	if (filenum==0) continue
 	processFile(arg,Hist_brbc)
 }
