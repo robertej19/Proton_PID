@@ -185,10 +185,13 @@ int max_hists = 18
 def hist_brbc = [:].withDefault{new H1F("hist_${it}", "title for ${it}",100,-1,1)}
 
 //H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
-for(int isec=1;isec<=6;isec++)
- for(int ilay=1;ilay<=3;ilay++)
+for(int isec=1;isec<=6;isec++){
+ for(int ilay=1;ilay<=3;ilay++){
  	 println "trying to populate"
    hist_brbc["sec${isec}_layer${ilay}"].fill(0)
+ }
+}
+
 
 
 
