@@ -148,6 +148,7 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer){
 	int hist_layer = 6*(p_layer-1)+p_sect-1
 	H_proton_beta_momentum[hist_layer].fill(p_momentum,beta_recon)
+	H_proton_DeltaBeta_momentum[hist_layer].fill(p_momentum,beta_recon-beta_calc)
 	H_proton_mom[hist_layer].fill(p_momentum);
 	H_beta_recon_beta_calc[hist_layer].fill(beta_recon-beta_calc);
 	H_proton_vz_mom[hist_layer].fill(p_momentum,p_vz);
@@ -176,6 +177,8 @@ out.cd('/'+run)
 int max_hists = 18
 
 H_proton_beta_momentum =(0..<max_hists).collect{new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1)}
+
+H_proton_DeltaBeta_momentum =(0..<max_hists).collect{new H2F("H_proton_DeltaBeta_momentum_S"+(it+1), "H_proton_DeltaBeta_momentum_S"+(it+1),800,0,EB,100,-1,1)}
 
 H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
 
@@ -208,6 +211,7 @@ for (arg in args){
 
 (0..<max_hists).each{
 	out.addDataSet(H_proton_beta_momentum[it])
+	out.addDataSet(H_proton_DeltaBeta_momentum[it])
 	out.addDataSet(H_proton_mom[it])
 	out.addDataSet(H_beta_recon_beta_calc[it])
 	out.addDataSet(H_proton_vz_mom[it])
