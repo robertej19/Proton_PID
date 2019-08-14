@@ -42,6 +42,7 @@ reader.open(args[0])
 
 //while(reader.hasEvent()) {
 for (int i=0; i < 5; i++) {
+	println("event i is: $i")
   def event = reader.getNextEvent()
 	if(!event.hasBank("REC::Particle")) return
 
@@ -75,6 +76,7 @@ for (int i=0; i < 5; i++) {
 		//if(beta_recon<beta_upper || beta_recon>beta_lower) return
 
 		println("IM HERE")
+
 		DataBank recon_Scint = event.getBank("REC::Scintillator")
 			if(recon_Scint.getInt("detector",p_ind)==12){
 				p_layer = recon_Scint.getInt("layer",p_ind)
