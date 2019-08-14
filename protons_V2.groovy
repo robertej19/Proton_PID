@@ -73,37 +73,33 @@ while(reader.hasEvent()) {
 
 		//if(beta_recon<beta_upper || beta_recon>beta_lower) return
 
-		println("IM HERE")
-
 		DataBank recon_Scint = event.getBank("REC::Scintillator")
-			if(recon_Scint.getInt("detector",p_ind)==12){
-				p_layer = recon_Scint.getInt("layer",p_ind)
-				p_sect = recon_Scint.getInt("sector",p_ind)
-				p_time = recon_Scint.getFloat("time",p_ind)
-				p_path = recon_Scint.getFloat("path",p_ind)
+		if(recon_Scint.getInt("detector",p_ind)==12){
+			p_layer = recon_Scint.getInt("layer",p_ind)
+			p_sect = recon_Scint.getInt("sector",p_ind)
+			p_time = recon_Scint.getFloat("time",p_ind)
+			p_path = recon_Scint.getFloat("path",p_ind)
 
-				if ([1, 2, 3, 4, 5, 6].contains(p_sect) && [1, 2, 3].contains(p_layer)){
-					  title = "sec${p_sect}_layer${p_layer}"
-						Hist_momentum[title].fill(p_momentum)
-						Hist_time[title].fill(p_time)
-						Hist_path_length[title].fill(p_path)
-						Hist_vz[title].fill(p_vz)
-						Hist_beta_recon[title].fill(beta_recon-beta_calc)
-						Hist_beta_p[title].fill(p_momentum,beta_recon)
-						Hist_deltaB_p[title].fill(p_momentum,beta_recon-beta_calc)
-						Hist_momentum_vz[title].fill(p_momentum,p_vz)
-						Hist_momentum_theta[title].fill(p_momentum,p_theta)
-						Hist_momentum_phi[title].fill(p_momentum,p_phi)
-						Hist_theta_phi[title].fill(p_phi,p_theta)
-				}
+			if ([1, 2, 3, 4, 5, 6].contains(p_sect) && [1, 2, 3].contains(p_layer)){
+				title = "sec${p_sect}_layer${p_layer}"
+				Hist_momentum[title].fill(p_momentum)
+				Hist_time[title].fill(p_time)
+				Hist_path_length[title].fill(p_path)
+				Hist_vz[title].fill(p_vz)
+				Hist_beta_recon[title].fill(beta_recon-beta_calc)
+				Hist_beta_p[title].fill(p_momentum,beta_recon)
+				Hist_deltaB_p[title].fill(p_momentum,beta_recon-beta_calc)
+				Hist_momentum_vz[title].fill(p_momentum,p_vz)
+				Hist_momentum_theta[title].fill(p_momentum,p_theta)
+				Hist_momentum_phi[title].fill(p_momentum,p_phi)
+				Hist_theta_phi[title].fill(p_phi,p_theta)
 			}
-			else{
-				println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
-			}
-
-  }
+		}
+		else{
+			println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
+		}
+	}
 }
-
 
 reader.close()
 
