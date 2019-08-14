@@ -19,7 +19,6 @@ import org.jlab.clas.physics.LorentzVector
 import org.jlab.groot.base.GStyle
 import org.jlab.groot.graphics.EmbeddedCanvas
 
-
 def Hist_momentum 			= [:].withDefault{new H1F("hist_momentum${it}"				, "Momentum ${it}"										,100,0,EB)}
 def Hist_time 					= [:].withDefault{new H1F("hist_time${it}"						, "Time ${it}"												,100,0,250)}
 def Hist_path_length 		= [:].withDefault{new H1F("Hist_path_length${it}"			, "Path Length ${it}"									,100,400,1000)}
@@ -85,10 +84,20 @@ while(reader.hasEvent()) {
 				p_path = recon_Scint.getFloat("path",p_ind)
 
 				if ([1, 2, 3, 4, 5, 6].contains(p_sect) && [1, 2, 3].contains(p_layer)){
-						Hist_beta_recon["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc)
-						Hist_beta_p["sec${p_sect}_layer${p_layer}"].fill(p_momentum,beta_recon)
+					  title = "sec${p_sect}_layer${p_layer}"
+						Hist_momentum[title].fill(p_momentum)
+						Hist_time[title].fill(p_time)
+						Hist_path_length[title].fill(p_path)
+						Hist_vz[title].fill(p_vz)
+						Hist_beta_recon[title].fill(beta_recon-beta_calc)
+						Hist_beta_p[title].fill(p_momentum,beta_recon)
+						Hist_deltaB_p[title].fill(p_momentum,beta_recon-beta_calc)
+						Hist_momentum_vz[title].fill(p_momentum,p_vz)
+						Hist_momentum_theta[title].fill(p_momentum,p_theta)
+						Hist_momentum_phi[title].fill(p_momentum,p_phi)
+						Hist_theta_phi[title].fill(p_phi,p_theta)
 				}
-			}
+			}	
 			else{
 				println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
 			}
