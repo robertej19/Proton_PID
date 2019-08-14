@@ -42,7 +42,7 @@ reader.open(args[0])
 
 while(reader.hasEvent()) {
 //for (int i=0; i < 5; i++) {
-	println("event i is: $i")
+	//println("event i is: $i")
   def event = reader.getNextEvent()
 	if(!event.hasBank("REC::Particle")) continue
 
