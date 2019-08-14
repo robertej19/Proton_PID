@@ -36,11 +36,12 @@ int run = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
 float EB = 10.6f
 if(run>6607) EB=10.2f
 println(run)
+
 def reader = new HipoDataSource()
 reader.open(args[0])
 
-//while(reader.hasEvent()) {
-for (int i=0; i < 5; i++) {
+while(reader.hasEvent()) {
+//for (int i=0; i < 5; i++) {
   def event = reader.getNextEvent()
 	if(!event.hasBank("REC::Particle")) return
 
