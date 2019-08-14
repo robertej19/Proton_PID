@@ -44,7 +44,7 @@ reader.open(args[0])
 for (int i=0; i < 5; i++) {
 	println("event i is: $i")
   def event = reader.getNextEvent()
-	if(!event.hasBank("REC::Particle")) return
+	if(!event.hasBank("REC::Particle")) continue
 
 	//float startTime = event.getBank("REC::Event").getFloat("startTime",0);
 	DataBank reconstructedParticle = event.getBank("REC::Particle")
