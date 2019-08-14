@@ -38,8 +38,8 @@ def Hist_momentum_theta = [:].withDefault{new H2F("Hist_momentum_theta${it}"	, "
 def Hist_momentum_phi 	= [:].withDefault{new H2F("Hist_momentum_phi${it}"		, "Momentum vs. Phi ${it}"						,100,0,EB,100,-180, 180)}
 def Hist_theta_phi 			= [:].withDefault{new H2F("Hist_theta_phi${it}"				, "Theta vs. Phi ${it}"								,100,-180, 180,100,0,40)}
 
-//while(reader.hasEvent()) {
-for (int i=0; i < 15; i++) {
+while(reader.hasEvent()) {
+//for (int i=0; i < 15; i++) {
 	//println("event i is: $i")
   def event = reader.getNextEvent()
 	if(!event.hasBank("REC::Particle")) continue
@@ -48,9 +48,9 @@ for (int i=0; i < 15; i++) {
 	DataBank reconstructedParticle = event.getBank("REC::Particle")
 
 	for(int p_ind=0;p_ind<event.getBank("REC::Particle").rows();p_ind++){ //Loop over all particles in the event
-		println("P is $p_ind")
+		//println("P is $p_ind")
 		if(!reconstructedParticle.getInt("charge",p_ind)==1) continue
-		println("positive charge, continuing")
+		//println("positive charge, continuing")
 		//if(!reconstructedParticle.getInt("pid",p)==2212) return false;
 		float px = reconstructedParticle.getFloat("px",p_ind)
 		float py = reconstructedParticle.getFloat("py",p_ind)
