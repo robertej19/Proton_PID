@@ -86,6 +86,7 @@ while(reader.hasEvent()) {
 
 				if ([1, 2, 3, 4, 5, 6].contains(p_sect) && [1, 2, 3].contains(p_layer)){
 						Hist_beta_recon["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc)
+						Hist_beta_p["sec${p_sect}_layer${p_layer}"].fill(p_momentum,beta_recon)
 				}
 			}
 			else{
