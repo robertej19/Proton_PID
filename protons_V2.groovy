@@ -56,6 +56,7 @@ for (int i=0; i < 5; i++) {
 		float px = reconstructedParticle.getFloat("px",p_ind)
 		float py = reconstructedParticle.getFloat("py",p_ind)
 		float pz = reconstructedParticle.getFloat("pz",p_ind)
+		println("IM HERE22")
 		float beta_recon = reconstructedParticle.getFloat("beta",p_ind)
 		float p_momentum = (float)Math.sqrt(px*px+py*py+pz*pz)
 		float p_vz = reconstructedParticle.getFloat("vz",p_ind)
@@ -68,6 +69,7 @@ for (int i=0; i < 5; i++) {
 		float scale_factor = 0.30
 		float beta_calc = (float)Math.sqrt(p_momentum*p_momentum/(p_momentum*p_momentum+p_mass*p_mass))
 		float p_mom_up = p_momentum*(1+scale_factor)
+		println("IM HERE33")
 		float p_mom_low = p_momentum*(1-scale_factor)
 		float beta_upper = (float)Math.sqrt(p_mom_up*p_mom_up/(p_mom_up*p_mom_up+p_mass*p_mass))
 		float beta_lower = (float)Math.sqrt(p_mom_low*p_mom_low/(p_mom_low*p_mom_low+p_mass*p_mass))
