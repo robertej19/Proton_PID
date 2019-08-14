@@ -109,7 +109,7 @@ out.cd('/'+run)
 
 for(int isec=1;isec<=6;isec++){
  for(int ilay=1;ilay<=3;ilay++){
-	 title = "sec${p_sect}_layer${p_layer}"
+	 title = "sec${isec}_layer${ilay}"
 	 out.addDataSet(Hist_momentum[title])
 	 out.addDataSet(Hist_time[title])
 	 out.addDataSet(Hist_path_length[title])
