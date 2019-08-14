@@ -64,6 +64,7 @@ while(reader.hasEvent()) {
 		float p_vx = reconstructedParticle.getFloat("vx",p_ind)
 		float p_vy = reconstructedParticle.getFloat("vy",p_ind)
 		Ve = new LorentzVector(px,py,pz,p_momentum)
+		println("IM HERE11")
 		float p_phi = (float) Math.toDegrees(Ve.phi())
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
