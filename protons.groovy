@@ -184,7 +184,7 @@ TDirectory out = new TDirectory()
 out.mkdir('/'+run)
 out.cd('/'+run)
 
-list = "cars bars"
+def list = "cars bars"
 println(list)
 
 def Hist_momentum 			= [:].withDefault{new H1F("hist_momentum${it}"				, "Momentum ${it}"										,100,0,EB)}
