@@ -53,6 +53,7 @@ while(reader.hasEvent()) {
 	for(int p=0;p<event.getBank("REC::Particle").rows();p++){ //Loop over all particles in the event
 		println("P is $p")
 		if(!reconstructedParticle.getInt("charge",p)==1) return false
+		if(reconstructedParticle.getInt("pid",p)==2212) return true;
 		println("positive charge, continuing")
 		float px = reconstructedParticle.getFloat("px",p_ind)
 		float py = reconstructedParticle.getFloat("py",p_ind)
@@ -73,12 +74,7 @@ while(reader.hasEvent()) {
 		float p_mom_low = p_momentum*(1-scale_factor)
 		float beta_upper = (float)Math.sqrt(p_mom_up*p_mom_up/(p_mom_up*p_mom_up+p_mass*p_mass))
 		float beta_lower = (float)Math.sqrt(p_mom_low*p_mom_low/(p_mom_low*p_mom_low+p_mass*p_mass))
-		println("IM HERE33322")
 
-		println("IM HERE22")
-    def secs = [evc.getShort('pindex')*.toInteger(), evc.getByte('sector')].transpose().collectEntries()
-		println("IM HERE33")
-		if(reconstructedParticle.getInt("pid",p)==2212) return true;
 
 			if((beta_recon<beta_upper) && (beta_recon>beta_lower)){
 				 return true
