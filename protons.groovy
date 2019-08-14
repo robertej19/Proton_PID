@@ -199,6 +199,8 @@ def Hist_theta_phi 			= [:].withDefault{new H2F("hist_theta_phi${it}"				, "Thet
 
 Hist_List = [Hist_momentum,Hist_time,Hist_path_length,Hist_vz,Hist_beta_recon,Hist_beta_p]
 
+println Hist_List[1]
+
 """------------------------ Start of Program -------------------------"""
 
 filenum=-1 //There should be able to get rid of this filenum issue
