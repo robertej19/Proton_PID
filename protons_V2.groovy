@@ -19,6 +19,9 @@ import org.jlab.clas.physics.LorentzVector
 import org.jlab.groot.base.GStyle
 import org.jlab.groot.graphics.EmbeddedCanvas
 
+float EB = 10.6f
+if(run>6607) EB=10.2f
+
 def Hist_momentum 			= [:].withDefault{new H1F("hist_momentum${it}"				, "Momentum ${it}"										,100,0,EB)}
 def Hist_time 					= [:].withDefault{new H1F("hist_time${it}"						, "Time ${it}"												,100,0,250)}
 def Hist_path_length 		= [:].withDefault{new H1F("Hist_path_length${it}"			, "Path Length ${it}"									,100,400,1000)}
@@ -32,9 +35,6 @@ def Hist_momentum_phi 	= [:].withDefault{new H2F("hist_momentum_phi${it}"		, "Mo
 def Hist_theta_phi 			= [:].withDefault{new H2F("hist_theta_phi${it}"				, "Theta vs. Phi ${it}"								,100,-180, 180,100,0,40)}
 
 int run = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
-float EB = 10.6f
-if(run>6607) EB=10.2f
-println(run)
 
 def reader = new HipoDataSource()
 reader.open(args[0])
@@ -97,7 +97,7 @@ while(reader.hasEvent()) {
 						Hist_momentum_phi[title].fill(p_momentum,p_phi)
 						Hist_theta_phi[title].fill(p_phi,p_theta)
 				}
-			}	
+			}
 			else{
 				println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
 			}
