@@ -44,14 +44,14 @@ reader.open(args[0])
 for (int i=0; i < 5; i++) {
 	println("event i is: $i")
   def event = reader.getNextEvent()
-	if(event.hasBank("REC::Particle")) continue
+	if(!event.hasBank("REC::Particle")) continue
 
 	//float startTime = event.getBank("REC::Event").getFloat("startTime",0);
 	DataBank reconstructedParticle = event.getBank("REC::Particle")
 
 	for(int p_ind=0;p_ind<event.getBank("REC::Particle").rows();p_ind++){ //Loop over all particles in the event
 		println("P is $p_ind")
-		if(!reconstructedParticle.getInt("charge",p_ind)==1) return
+		if(!reconstructedParticle.getInt("charge",p_ind)==1) continue
 		println("positive charge, continuing")
 		//if(!reconstructedParticle.getInt("pid",p)==2212) return false;
 		float px = reconstructedParticle.getFloat("px",p_ind)
