@@ -145,8 +145,9 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc,beta_upper,beta_lower]
 }
 
-public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer,Hist_brbc){
+public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer,Hist_beta_recon){
 	//int hist_layer = 6*(p_layer-1)+p_sect-1
+	"""
 	int hist_layer = p_sect-1
 	H_proton_beta_momentum[hist_layer].fill(p_momentum,beta_recon)
 	H_proton_DeltaBeta_momentum[hist_layer].fill(p_momentum,beta_recon-beta_calc)
@@ -163,8 +164,8 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 
 	//for(int isec=1;isec<=6;isec++)
 	//for(int ilay=1;ilay<=3;ilay++)
-	//println "Trying to fill histogram"
-	Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc);
+	//println "Trying to fill histogram"""
+	Hist_beta_recon["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc);
 	//Hist_brbc["sec2_layer2"].fill(1);
 
 
@@ -183,33 +184,17 @@ TDirectory out = new TDirectory()
 out.mkdir('/'+run)
 out.cd('/'+run)
 
-int max_hists = 6
-
-def Hist_brbc = [:].withDefault{new H1F("hist_${it}", "title for ${it}",100,-1,1)}
-
-H_beta_recon_beta_calc =(0..<max_hists).collect{new H1F("H_beta_recon_beta_calc_S"+(it+1), "H_beta_recon_beta_calc_S"+(it+1),100, -1, 1)}
-
-H_proton_beta_momentum =(0..<max_hists).collect{new H2F("H_proton_beta_momentum_S"+(it+1), "H_proton_beta_momentum_S"+(it+1),800,0,EB,100,0,1)}
-
-H_proton_DeltaBeta_momentum =(0..<max_hists).collect{new H2F("H_proton_DeltaBeta_momentum_S"+(it+1), "H_proton_DeltaBeta_momentum_S"+(it+1),400,0,EB,400,-0.2,0.2)}
-
-H_proton_mom =(0..<max_hists).collect{new H1F("H_proton_mom_S"+(it+1), "H_proton_mom_S"+(it+1),100, 0, EB)}
-
-H_proton_time =(0..<max_hists).collect{new H1F("H_proton_time_S"+(it+1), "H_proton_time_S"+(it+1),100, 0, 250)}
-
-H_proton_path =(0..<max_hists).collect{new H1F("H_proton_path_S"+(it+1), "H_proton_path_S"+(it+1),100, 400, 1000)}
-
-//H_proton_sect ={new H1F("H_proton_sect", "H_proton_sect",100, 0, 7)}
-
-H_elec_vz =(0..<6).collect{new H1F("H_elec_vz_S"+(it+1), "H_elec_vz_S"+(it+1),100,-25,25)}
-
-H_proton_vz_mom =(0..<max_hists).collect{new H2F("H_proton_vz_mom_S"+(it+1), "H_proton_vz_mom_S"+(it+1),100,0,EB,100,-25,25)}
-
-H_proton_theta_mom =(0..<max_hists).collect{new H2F("H_proton_theta_mom_S"+(it+1), "H_proton_theta_mom_S"+(it+1),100,0,EB,100,0,40)}
-
-H_proton_phi_mom = (0..<max_hists).collect{new H2F("H_proton_phi_mom_S"+(it+1), "H_proton_phi_mom_S"+(it+1),100,0,EB,100,-180,180)}
-
-H_proton_theta_phi =(0..<max_hists).collect{new H2F("H_proton_theta_phi_S"+(it+1), "H_proton_theta_phi_S"+(it+1),100,-180,180,100,0,40)}
+def Hist_momentum 			= [:].withDefault{new H1F("hist_momentum${it}"				, "Momentum ${it}"										,100,0,EB)}
+def Hist_time 					= [:].withDefault{new H1F("hist_time${it}"						, "Time ${it}"												,100,0,250)}
+def Hist_path_length 		= [:].withDefault{new H1F("Hist_path_length${it}"			, "Path Length ${it}"									,100,400,1000)}
+def Hist_vz 						= [:].withDefault{new H1F("hist_vz${it}"							, "Z vertex ${it}"										,100,-25,25)}
+def Hist_beta_recon			= [:].withDefault{new H1F("hist_beta_recon${it}"			, "REC::Part Beta vs Calc Beta ${it}"	,100,-1,1)}
+def Hist_beta_p 				= [:].withDefault{new H2F("hist_beta_p${it}"					, "Beta vs. Momentum ${it}"						,100,0,EB,100,0,1)}
+def Hist_deltaB_p 			= [:].withDefault{new H2F("Hist_deltaB_p${it}"				, "Delta B vs. Momentum ${it}"				,400,0,EB,400,-0.2,0.2)}
+def Hist_momentum_vz 		= [:].withDefault{new H2F("hist_momentum_vz${it}"			, "Momentum vs. Vz ${it}"							,100,0,EB,100,-25,25)}
+def Hist_momentum_theta = [:].withDefault{new H2F("hist_momentum_theta${it}"	, "Momentum vs. Theta ${it}"					,100,0,EB,100,0,40)}
+def Hist_momentum_phi 	= [:].withDefault{new H2F("hist_momentum_phi${it}"		, "Momentum vs. Phi ${it}"						,100,0,EB,100,-180, 180)}
+def Hist_theta_phi 			= [:].withDefault{new H2F("hist_theta_phi${it}"				, "Theta vs. Phi ${it}"								,100,-180, 180,100,0,40)}
 
 """------------------------ Start of Program -------------------------"""
 
@@ -220,6 +205,7 @@ for (arg in args){
 	processFile(arg,Hist_brbc)
 }
 
+"""
 (0..<max_hists).each{
 	out.addDataSet(H_proton_beta_momentum[it])
 	out.addDataSet(H_proton_DeltaBeta_momentum[it])
@@ -231,12 +217,11 @@ for (arg in args){
 	out.addDataSet(H_proton_theta_phi[it])
 	out.addDataSet(H_proton_time[it])
 	out.addDataSet(H_proton_path[it])
-}
+}"""
 
 for(int isec=1;isec<=6;isec++){
  for(int ilay=1;ilay<=3;ilay++){
- 	 //println "trying to populate"
-   out.addDataSet(Hist_brbc["sec${isec}_layer${ilay}"])
+   out.addDataSet(Hist_beta_recon["sec${isec}_layer${ilay}"])
  }
 }
 
