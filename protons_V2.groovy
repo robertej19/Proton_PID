@@ -40,8 +40,8 @@ println(run)
 def reader = new HipoDataSource()
 reader.open(args[0])
 
-while(reader.hasEvent()) {
-//for (int i=0; i < 5; i++) {
+//while(reader.hasEvent()) {
+for (int i=0; i < 5; i++) {
   def event = reader.getNextEvent()
 	if(!event.hasBank("REC::Particle")) return
 
@@ -53,8 +53,8 @@ while(reader.hasEvent()) {
 	for(int p=0;p<event.getBank("REC::Particle").rows();p++){ //Loop over all particles in the event
 		println("P is $p")
 		if(!reconstructedParticle.getInt("charge",p)==1) return false
-		if(reconstructedParticle.getInt("pid",p)==2212) return true;
 		println("positive charge, continuing")
+		//if(!reconstructedParticle.getInt("pid",p)==2212) return false;
 		float px = reconstructedParticle.getFloat("px",p_ind)
 		float py = reconstructedParticle.getFloat("py",p_ind)
 		float pz = reconstructedParticle.getFloat("pz",p_ind)
@@ -64,7 +64,6 @@ while(reader.hasEvent()) {
 		float p_vx = reconstructedParticle.getFloat("vx",p_ind)
 		float p_vy = reconstructedParticle.getFloat("vy",p_ind)
 		Ve = new LorentzVector(px,py,pz,p_momentum)
-		println("IM HERE11")
 		float p_phi = (float) Math.toDegrees(Ve.phi())
 		float p_theta = (float) Math.toDegrees(Ve.theta())
 		float p_mass = 0.938 //Proton mass in GeV
@@ -75,31 +74,23 @@ while(reader.hasEvent()) {
 		float beta_upper = (float)Math.sqrt(p_mom_up*p_mom_up/(p_mom_up*p_mom_up+p_mass*p_mass))
 		float beta_lower = (float)Math.sqrt(p_mom_low*p_mom_low/(p_mom_low*p_mom_low+p_mass*p_mass))
 
+		if(!beta_recon<beta_upper || !beta_recon>beta_lower) return false
 
-			if((beta_recon<beta_upper) && (beta_recon>beta_lower)){
-				 return true
-			 }
-			else return false;
-
-				p_ind=p //This gives us the index of the row that has the particle event
-				return true
+		println("IM HERE")
+		DataBank recon_Scint = event.getBank("REC::Scintillator")
+			if(recon_Scint.getInt("detector",p_ind)==12){
+				p_layer = recon_Scint.getInt("layer",p_ind)
+				p_sect = recon_Scint.getInt("sector",p_ind)
+				p_time = recon_Scint.getFloat("time",p_ind)
+				p_path = recon_Scint.getFloat("path",p_ind)
 			}
-
-			println("IM HERE")
-				DataBank recon_Scint = event.getBank("REC::Scintillator")
-				if(recon_Scint.getInt("detector",p_ind)==12){
-					p_layer = recon_Scint.getInt("layer",p_ind)
-					p_sect = recon_Scint.getInt("sector",p_ind)
-					p_time = recon_Scint.getFloat("time",p_ind)
-					p_path = recon_Scint.getFloat("path",p_ind)
-				}
-				else{
-					println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
-				}
-				if (p_momentum < 50){
-					if ([1, 2, 3, 4, 5, 6].contains(p_sect)){
-						if ([1, 2, 3].contains(p_layer)){
-							Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc)
+			else{
+				println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
+			}
+			if (p_momentum < 50){
+				if ([1, 2, 3, 4, 5, 6].contains(p_sect)){
+					if ([1, 2, 3].contains(p_layer)){
+						Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc)
 }}}}
 
 reader.close()
