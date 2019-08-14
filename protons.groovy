@@ -145,7 +145,7 @@ def makeParticle(DataBank reconstructedParticle,int p_ind){
 		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc,beta_upper,beta_lower]
 }
 
-public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer,Hist_beta_recon){
+public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,p_path,p_sect,p_layer,Histogram_List){
 	//int hist_layer = 6*(p_layer-1)+p_sect-1
 	"""
 	int hist_layer = p_sect-1
@@ -165,7 +165,7 @@ public void fillHists(p_momentum,beta_recon,p_theta,p_phi,p_vz,beta_calc,p_time,
 	//for(int isec=1;isec<=6;isec++)
 	//for(int ilay=1;ilay<=3;ilay++)
 	//println "Trying to fill histogram"""
-	Hist_beta_recon["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc);
+	Histogram_List[5]["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc);
 	//Hist_brbc["sec2_layer2"].fill(1);
 
 
@@ -184,9 +184,6 @@ TDirectory out = new TDirectory()
 out.mkdir('/'+run)
 out.cd('/'+run)
 
-def list = "cars bars"
-println(list)
-
 def Hist_momentum 			= [:].withDefault{new H1F("hist_momentum${it}"				, "Momentum ${it}"										,100,0,EB)}
 def Hist_time 					= [:].withDefault{new H1F("hist_time${it}"						, "Time ${it}"												,100,0,250)}
 def Hist_path_length 		= [:].withDefault{new H1F("Hist_path_length${it}"			, "Path Length ${it}"									,100,400,1000)}
@@ -199,13 +196,16 @@ def Hist_momentum_theta = [:].withDefault{new H2F("hist_momentum_theta${it}"	, "
 def Hist_momentum_phi 	= [:].withDefault{new H2F("hist_momentum_phi${it}"		, "Momentum vs. Phi ${it}"						,100,0,EB,100,-180, 180)}
 def Hist_theta_phi 			= [:].withDefault{new H2F("hist_theta_phi${it}"				, "Theta vs. Phi ${it}"								,100,-180, 180,100,0,40)}
 
+
+Hist_List = [Hist_momentum,Hist_time,Hist_path_length,Hist_vz,Hist_beta_recon,Hist_beta_p]
+
 """------------------------ Start of Program -------------------------"""
 
 filenum=-1 //There should be able to get rid of this filenum issue
 for (arg in args){
 	filenum=filenum+1
 	if (filenum==0) continue
-	processFile(arg,Hist_beta_recon)
+	processFile(arg,Hist_List)
 }
 
 """
