@@ -184,6 +184,9 @@ TDirectory out = new TDirectory()
 out.mkdir('/'+run)
 out.cd('/'+run)
 
+list = "cars bars"
+println(list)
+
 def Hist_momentum 			= [:].withDefault{new H1F("hist_momentum${it}"				, "Momentum ${it}"										,100,0,EB)}
 def Hist_time 					= [:].withDefault{new H1F("hist_time${it}"						, "Time ${it}"												,100,0,250)}
 def Hist_path_length 		= [:].withDefault{new H1F("Hist_path_length${it}"			, "Path Length ${it}"									,100,400,1000)}
@@ -224,8 +227,5 @@ for(int isec=1;isec<=6;isec++){
    out.addDataSet(Hist_beta_recon["sec${isec}_layer${ilay}"])
  }
 }
-
-
-//out.addDataSet(H_proton_sect)
 
 out.writeFile('proton_pID_new'+run+'.hipo')
