@@ -75,8 +75,9 @@ while(reader.hasEvent()) {
 		float beta_upper = (float)Math.sqrt(p_mom_up*p_mom_up/(p_mom_up*p_mom_up+p_mass*p_mass))
 		float beta_lower = (float)Math.sqrt(p_mom_low*p_mom_low/(p_mom_low*p_mom_low+p_mass*p_mass))
 		return [p_momentum, beta_recon,p_theta,p_phi,p_vz,beta_calc,beta_upper,beta_lower]
+		println("IM HERE22")
     def secs = [evc.getShort('pindex')*.toInteger(), evc.getByte('sector')].transpose().collectEntries()
-
+		println("IM HERE33")
 		if(reconstructedParticle.getInt("pid",p)==2212) return true;
 
 			if((beta_recon<beta_upper) && (beta_recon>beta_lower)){
