@@ -72,7 +72,7 @@ for (int i=0; i < 5; i++) {
 		float beta_upper = (float)Math.sqrt(p_mom_up*p_mom_up/(p_mom_up*p_mom_up+p_mass*p_mass))
 		float beta_lower = (float)Math.sqrt(p_mom_low*p_mom_low/(p_mom_low*p_mom_low+p_mass*p_mass))
 
-		if(beta_recon<beta_upper || beta_recon>beta_lower) return
+		//if(beta_recon<beta_upper || beta_recon>beta_lower) return
 
 		println("IM HERE")
 		DataBank recon_Scint = event.getBank("REC::Scintillator")
