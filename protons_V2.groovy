@@ -46,11 +46,11 @@ for (int i=0; i < 5; i++) {
 	if(!event.hasBank("REC::Particle")) return
 
 	//float startTime = event.getBank("REC::Event").getFloat("startTime",0);
-	DataBank reconstructedParticle = event.getBank("REC::Particle");
+	DataBank reconstructedParticle = event.getBank("REC::Particle")
 
 	for(int p=0;p<event.getBank("REC::Particle").rows();p++){ //Loop over all particles in the event
 		println("P is $p")
-		if(!reconstructedParticle.getInt("charge",p)==1) return false
+		if(!reconstructedParticle.getInt("charge",p)==1) return
 		println("positive charge, continuing")
 		//if(!reconstructedParticle.getInt("pid",p)==2212) return false;
 		float px = reconstructedParticle.getFloat("px",p_ind)
@@ -86,10 +86,10 @@ for (int i=0; i < 5; i++) {
 				println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
 			}
 
-				if ([1, 2, 3, 4, 5, 6].contains(p_sect) && [1, 2, 3].contains(p_layer){
-						Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc)
-				}
+		if ([1, 2, 3, 4, 5, 6].contains(p_sect) && [1, 2, 3].contains(p_layer){
+				Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc)
 		}
+  }
 }
 
 
