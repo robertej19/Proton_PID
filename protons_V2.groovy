@@ -35,7 +35,7 @@ def Hist_theta_phi 			= [:].withDefault{new H2F("hist_theta_phi${it}"				, "Thet
 int run = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
 float EB = 10.6f
 if(run>6607) EB=10.2f
-
+println(run)
 def reader = new HipoDataSource()
 reader.open(args[0])
 
