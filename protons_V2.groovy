@@ -49,8 +49,8 @@ for (int i=0; i < 5; i++) {
 	DataBank reconstructedParticle = event.getBank("REC::Particle")
 
 	for(int p_ind=0;p_ind<event.getBank("REC::Particle").rows();p_ind++){ //Loop over all particles in the event
-		println("P is $p")
-		if(!reconstructedParticle.getInt("charge",p)==1) return
+		println("P is $p_ind")
+		if(!reconstructedParticle.getInt("charge",p_ind)==1) return
 		println("positive charge, continuing")
 		//if(!reconstructedParticle.getInt("pid",p)==2212) return false;
 		float px = reconstructedParticle.getFloat("px",p_ind)
