@@ -48,8 +48,6 @@ for (int i=0; i < 5; i++) {
 	//float startTime = event.getBank("REC::Event").getFloat("startTime",0);
 	DataBank reconstructedParticle = event.getBank("REC::Particle");
 
-	p_ind=-1
-
 	for(int p=0;p<event.getBank("REC::Particle").rows();p++){ //Loop over all particles in the event
 		println("P is $p")
 		if(!reconstructedParticle.getInt("charge",p)==1) return false
@@ -87,11 +85,13 @@ for (int i=0; i < 5; i++) {
 			else{
 				println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
 			}
-			if (p_momentum < 50){
-				if ([1, 2, 3, 4, 5, 6].contains(p_sect)){
-					if ([1, 2, 3].contains(p_layer)){
+
+				if ([1, 2, 3, 4, 5, 6].contains(p_sect) && [1, 2, 3].contains(p_layer){
 						Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc)
-}}}}
+				}
+		}
+}
+
 
 reader.close()
 
