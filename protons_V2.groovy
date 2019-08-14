@@ -109,7 +109,18 @@ out.cd('/'+run)
 
 for(int isec=1;isec<=6;isec++){
  for(int ilay=1;ilay<=3;ilay++){
-   out.addDataSet(Hist_beta_recon["sec${isec}_layer${ilay}"])
+	 title = "sec${p_sect}_layer${p_layer}"
+	 out.addDataSet(Hist_momentum[title])
+	 out.addDataSet(Hist_time[title])
+	 out.addDataSet(Hist_path_length[title])
+	 out.addDataSet(Hist_vz[title])
+	 out.addDataSet(Hist_beta_recon[title])
+	 out.addDataSet(Hist_beta_p[title])
+	 out.addDataSet(Hist_deltaB_p[title])
+	 out.addDataSet(Hist_momentum_vz[title])
+	 out.addDataSet(Hist_momentum_theta[title])
+	 out.addDataSet(Hist_momentum_phi[title])
+	 out.addDataSet(Hist_theta_phi[title])
  }
 }
 
