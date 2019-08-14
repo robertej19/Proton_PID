@@ -20,7 +20,11 @@ import org.jlab.groot.base.GStyle
 import org.jlab.groot.graphics.EmbeddedCanvas
 
 float EB = 10.6f
+int run = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
 if(run>6607) EB=10.2f
+
+def reader = new HipoDataSource()
+reader.open(args[0])
 
 def Hist_momentum 			= [:].withDefault{new H1F("hist_momentum${it}"				, "Momentum ${it}"										,100,0,EB)}
 def Hist_time 					= [:].withDefault{new H1F("hist_time${it}"						, "Time ${it}"												,100,0,250)}
@@ -33,11 +37,6 @@ def Hist_momentum_vz 		= [:].withDefault{new H2F("hist_momentum_vz${it}"			, "Mo
 def Hist_momentum_theta = [:].withDefault{new H2F("hist_momentum_theta${it}"	, "Momentum vs. Theta ${it}"					,100,0,EB,100,0,40)}
 def Hist_momentum_phi 	= [:].withDefault{new H2F("hist_momentum_phi${it}"		, "Momentum vs. Phi ${it}"						,100,0,EB,100,-180, 180)}
 def Hist_theta_phi 			= [:].withDefault{new H2F("hist_theta_phi${it}"				, "Theta vs. Phi ${it}"								,100,-180, 180,100,0,40)}
-
-int run = args[0].split("/")[-1].split('\\.')[0][-4..-1].toInteger()
-
-def reader = new HipoDataSource()
-reader.open(args[0])
 
 while(reader.hasEvent()) {
 //for (int i=0; i < 5; i++) {
