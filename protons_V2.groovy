@@ -38,8 +38,8 @@ def Hist_momentum_theta = [:].withDefault{new H2F("Hist_momentum_theta${it}"	, "
 def Hist_momentum_phi 	= [:].withDefault{new H2F("Hist_momentum_phi${it}"		, "Momentum vs. Phi ${it}"						,100,0,EB,100,-180, 180)}
 def Hist_theta_phi 			= [:].withDefault{new H2F("Hist_theta_phi${it}"				, "Theta vs. Phi ${it}"								,100,-180, 180,100,0,40)}
 
-while(reader.hasEvent()) {
-//for (int i=0; i < 5; i++) {
+//while(reader.hasEvent()) {
+for (int i=0; i < 15; i++) {
 	//println("event i is: $i")
   def event = reader.getNextEvent()
 	if(!event.hasBank("REC::Particle")) continue
