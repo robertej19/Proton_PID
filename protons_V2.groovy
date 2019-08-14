@@ -86,7 +86,7 @@ for (int i=0; i < 5; i++) {
 				println("Dectector is not 12, instead it is: "+recon_Scint.getInt("detector",p_ind))
 			}
 
-		if ([1, 2, 3, 4, 5, 6].contains(p_sect) && [1, 2, 3].contains(p_layer){
+		if ([1, 2, 3, 4, 5, 6].contains(p_sect) && [1, 2, 3].contains(p_layer)){
 				Hist_brbc["sec${p_sect}_layer${p_layer}"].fill(beta_recon-beta_calc)
 		}
   }
