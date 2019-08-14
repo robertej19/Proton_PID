@@ -87,6 +87,7 @@ while(reader.hasEvent()) {
 				return true
 			}
 
+			println("IM HERE")
 				DataBank recon_Scint = event.getBank("REC::Scintillator")
 				if(recon_Scint.getInt("detector",p_ind)==12){
 					p_layer = recon_Scint.getInt("layer",p_ind)
