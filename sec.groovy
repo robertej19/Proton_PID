@@ -19,7 +19,7 @@ while(reader.hasEvent()) {
 
     def evp = event.getBank("REC::Particle")
     evp.getInt("pid").eachWithIndex{pid, ind ->
-      //println pid+': '+secs[ind]
+      println pid+': '+secs[ind]
     }
   }
 }
