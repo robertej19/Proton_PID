@@ -202,7 +202,7 @@ filenum=-1 //There should be able to get rid of this filenum issue
 for (arg in args){
 	filenum=filenum+1
 	if (filenum==0) continue
-	processFile(arg,Hist_brbc)
+	processFile(arg,Hist_beta_recon)
 }
 
 """
